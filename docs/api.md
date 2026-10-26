@@ -25,6 +25,13 @@
 | 403 | `FORBIDDEN_ROLE` | Member gọi API của HeadOfFamily |
 | 404 | `NOT_FOUND` | id không tồn tại **hoặc** thuộc hộ khác (cố ý gộp để dò not-found) |
 | 409 | `BUDGET_CONFLICT` | version optimistic locking lỗi |
+| 409 | `EMAIL_EXISTS` | đăng ký trùng email |
+| 409 | `CATEGORY_IN_USE` / `WALLET_IN_USE` | xoá danh mục/ví còn giao dịch (BR-12) |
+| 409 | `CATEGORY_NAME_EXISTS` / `WALLET_NAME_EXISTS` / `FAMILY_NAME_EXISTS` / `ALREADY_MEMBER` | trùng khoá buộc (unique) |
+| 422 | `TX_CATEGORY_MISMATCH` | danh mục sai loại thu/chi so với giao dịch |
+| 400 | `TX_TRANSFER_TARGET_REQUIRED` / `TX_TRANSFER_SAME_WALLET` / `TX_TRANSFER_NOT_ALLOWED` | chuyển khoản thiếu/sai ví nhận |
+| 400 | `OWNER_IMMUTABLE` / `GOAL_CANCELLED` / `VALIDATION_FAILED` | vi phạm quy tắc nghiệp vụ hoặc body sai |
+| 401 | `REFRESH_TOKEN_REVOKED` | refresh token đã dùng hoặc hết hạn |
 | 423 | `ACCOUNT_LOCKED` | 5 lần đăng nhập sai / 15 phút |
 | 429 | `RATE_LIMITED` | vượt 100 request/phút/user |
 

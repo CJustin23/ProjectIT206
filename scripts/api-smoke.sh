@@ -15,7 +15,12 @@ FAILED=0
 
 step() { printf '\n=== %s ===\n' "$1"; }
 check() {
-  if [ "$1" = "0" ]; then echo "PASS: $2"; else echo "FAIL: $2"; FAILED=$((FAILED+1)); fi
+  if [ "$1" = "0" ]; then echo "PASS: $2"; else
+    echo "FAIL: $2"
+    # Trong GitHub Actions, đưa lý do vào annotation để đọc qua API mà cần quyền xem log
+    if [ "${GITHUB_ACTIONS:-}" = "true" ]; then echo "::error::api-smoke FAIL — $2"; fi
+    FAILED=$((FAILED+1))
+  fi
 }
 
 command -v jq >/dev/null || { echo "thiếu jq"; exit 2; }
@@ -33,6 +38,7 @@ echo "login body: ${LOGIN:0:400}"
 ACCESS=$(echo "$LOGIN" | jq -r '.accessToken // .access_token // empty')
  REFRESH=$(echo "$LOGIN" | jq -r '.refreshToken // .refresh_token // empty')
 [ -n "$ACCESS" ]; check $? "nhận được accessToken"
+if [ -z "$ACCESS" ]; then echo "::error::login khong tra token — body: ${LOGIN:0:300}"; fi
 
 AUTH="Authorization: Bearer $ACCESS"
 
@@ -62,6 +68,7 @@ TX=$(curl -s -w '\n%{http_code}' -X POST "$BASE/api/v1/transactions" -H "$AUTH" 
 echo "POST /transactions → $(printf '%s' "$TX" | tail -c 400)"
 TX_ID=$(printf '%s\n' "$TX" | head -n -1 | jq -r '.id // empty')
 [ -n "$TX_ID" ]; check $? "tạo giao dịch id=$TX_ID"
+if [ -z "$TX_ID" ]; then echo "::error::tx body: $(printf '%s' "$TX" | tr '\n' ' ' | tail -c 260)"; fi
 
 step "7. Số tiền âm phải bị từ chối"
 CODE=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$BASE/api/v1/transactions" -H "$AUTH" \
