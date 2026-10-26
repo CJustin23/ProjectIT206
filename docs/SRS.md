@@ -4,13 +4,12 @@
 | Hạng mục | Nội dung |
 |---|---|
 | Học phần | Phát triển Dự án Phần mềm / Đồ án Chuyên ngành |
-| Lớp học phần | HN-KS24-CNTT1 |
+| Lớp học phần | HN-KS24-CNTT3 |
 | Nhóm | Nhóm 05 (04 thành viên) |
 | Đề tài | Đề tài 10 — Personal Finance Management |
-| Giảng viên hướng dẫn | ThS. Bùi Thanh Hải |
+| Giảng viên hướng dẫn | Hồ Xuân Hùng|
 | Phiên bản tài liệu | 1.0 — Sprint 1 |
 | Ngày cập nhật | 22/10/2026 |
-| Trạng thái | Draft — chờ Giảng viên duyệt |
 
 **Người chịu trách nhiệm tài liệu:** Nguyễn Trường An (An) — Leader/Backend Lead.
 **Tham chiếu:** [`ERD.md`](ERD.md) · [`api.md`](api.md) · [`sprint1-checklist.md`](sprint1-checklist.md) · `Ke_Hoach_Do_An_Nhom05_DeTai10.xlsx` (sheet Backlog, RACI).
