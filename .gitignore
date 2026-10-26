@@ -1,0 +1,36 @@
+# Java / Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.properties
+*.class
+*.jar
+!gradle-wrapper.jar
+
+# Node
+node_modules/
+dist/
+.vite/
+*.local
+
+# Môi trường & bí mật
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
+
+# Log & dữ liệu runtime
+logs/
+*.log
+data/
+backups/

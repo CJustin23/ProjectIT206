@@ -1,0 +1,103 @@
+# =============================================================================
+# Môi trường DEVELOPMENT — Sprint 1
+# Khởi động:  docker compose --env-file .env up -d --build
+# Kiểm tra:   docker compose ps && curl http://localhost:8090/api/health
+# =============================================================================
+name: ${COMPOSE_PROJECT_NAME:-ffa-dev}
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ffa-mysql
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+07:00
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${DB_PORT_HOST:-3307}:3306"          # chỉ mở ở dev để tool GUI kết nối được
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - ffa-net
+
+  app:
+    build:
+      context: ./backend
+      args:
+        APP_VERSION: ${APP_VERSION:-dev}
+    image: ${APP_IMAGE:-ffa-app}:${APP_TAG:-latest}
+    container_name: ffa-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      DB_HOST: ${DB_HOST:-mysql}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ACCESS_TOKEN_MIN: ${JWT_ACCESS_TOKEN_MIN:-15}
+      JWT_REFRESH_TOKEN_DAY: ${JWT_REFRESH_TOKEN_DAY:-30}
+      APP_VERSION: ${APP_VERSION:-dev}
+    ports:
+      - "${APP_PORT:-8090}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    networks:
+      - ffa-net
+
+  web:
+    build:
+      context: ./frontend
+    image: ${WEB_IMAGE:-ffa-web}:${WEB_TAG:-latest}
+    container_name: ffa-web
+    restart: unless-stopped
+    depends_on:
+      - app
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+      VITE_PROXY_TARGET: http://app:8080
+    ports:
+      - "${WEB_PORT:-5173}:5173"
+    volumes:
+      - ./frontend/src:/app/src            # hot reload khi dev
+    networks:
+      - ffa-net
+
+  adminer:
+    image: adminer:4
+    container_name: ffa-adminer
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "${ADMINER_PORT:-8081}:8080"
+    networks:
+      - ffa-net
+
+volumes:
+  mysql_data:
+
+networks:
+  ffa-net:
+    driver: bridge
