@@ -49,10 +49,10 @@ CODE=$(curl -s -o /dev/null -w '%{http_code}' "$BASE/api/v1/transactions")
 [ "$CODE" = "401" ]; check $? "GET /transactions không token -> 401 (nhận $CODE)"
 
 step "6. Tạo danh mục + giao dịch"
-CATS=$(curl -fsS "$BASE/api/v1/categories" -H "$AUTH")
+CATS=$(curl -fsS "$BASE/api/v1/families/1/categories" -H "$AUTH")
 CAT_ID=$(echo "$CATS" | jq -r '.[0].id // .content[0].id // empty')
 [ -n "$CAT_ID" ]; check $? "đọc được danh mục (id=$CAT_ID)"
-WALLET_ID=$(curl -fsS "$BASE/api/v1/wallets" -H "$AUTH" | jq -r '.[0].id // .content[0].id // empty')
+WALLET_ID=$(curl -fsS "$BASE/api/v1/families/1/wallets" -H "$AUTH" | jq -r '.[0].id // .content[0].id // empty')
 TX=$(curl -fsS -X POST "$BASE/api/v1/transactions" -H "$AUTH" -H 'Content-Type: application/json' \
   -d "{\"type\":\"EXPENSE\",\"amount\":250000,\"transactionDate\":\"$(date +%F)\",\"categoryId\":$CAT_ID,\"walletId\":$WALLET_ID,\"note\":\"smoke test\"}")
 TX_ID=$(echo "$TX" | jq -r '.id')
@@ -65,8 +65,8 @@ CODE=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$BASE/api/v1/transactions
 [ "$CODE" = "400" ]; check $? "amount<=0 -> 400 (nhận $CODE)"
 
 step "8. Báo cáo tháng"
-REPORT=$(curl -fsS "$BASE/api/v1/reports/monthly?month=$(date +%Y-%m)" -H "$AUTH")
-echo "$REPORT" | jq -e 'has("totalExpense") or has("expense")' >/dev/null; check $? "report tháng có tổng chi"
+REPORT=$(curl -fsS "$BASE/api/v1/reports/dashboard?month=$(date +%Y-%m)" -H "$AUTH")
+echo "$REPORT" | XX' >/dev/null; check $? "report tháng có tổng chi"
 
 step "9. Xoá mềm giao dịch"
 curl -fsS -X DELETE "$BASE/api/v1/transactions/$TX_ID" -H "$AUTH" >/dev/null; check $? "DELETE /transactions/{id}"

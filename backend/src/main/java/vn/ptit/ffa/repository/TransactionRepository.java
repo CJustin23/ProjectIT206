@@ -142,6 +142,19 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     boolean existsByCategoryIdAndDeletedAtIsNull(Long categoryId);
 
+    /** Số tiền đã chi của một danh mục trong kỳ ngân sách (DUAN-53). */
+    @Query("""
+            SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t
+            WHERE t.familyId = :familyId AND t.deletedAt IS NULL
+              AND t.type = vn.ptit.ffa.domain.TransactionType.EXPENSE
+              AND t.categoryId = :categoryId
+              AND t.transactionDate >= :from AND t.transactionDate <= :to
+            """)
+    BigDecimal spentInCategoryPeriod(@Param("familyId") Long familyId,
+                                     @Param("categoryId") Long categoryId,
+                                     @Param("from") LocalDate from,
+                                     @Param("to") LocalDate to);
+
     boolean existsByWalletIdAndDeletedAtIsNull(Long walletId);
 
     boolean existsByTransferWalletIdAndDeletedAtIsNull(Long walletId);
