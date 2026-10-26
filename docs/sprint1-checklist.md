@@ -10,7 +10,7 @@
 | OPS-01 | Dockerfile + docker-compose dev | Vinh | ✅ `docker-compose.yml`, 2 Dockerfile |
 | DOC-01 | SRS + quy tắc nghiệp vụ + NFR | An | ✅ `docs/SRS.md` (19 UC, 12 BR, 12 NFR) |
 | OPS-02 | Workflow CI (build + test + compose smoke) | Vinh | ✅ 3 job xanh ở run #4 26/10 — còn GHCR + deploy SSH (Sprint 3–4) |
-| FE-01 | Prototype Figma 4 màn hình | Kỳ | ⏳ **phải làm tay** (mục 4) |
+| FE-01 | Prototype Figma 4 màn hình | Vinh | ⏳ **phải làm tay** (mục 4) |
 
 ## 1. Repository (ĐÃ PUSH — 22/10/2026)
 Repo thật của nhóm: **https://github.com/CJustin23/ProjectIT206** — đã có `main` + `develop` và commit `chore(sprint1): ...`.
@@ -42,7 +42,7 @@ Nếu không muốn dùng `gh`: Settings → Branches → Add branch protection 
 1. Tạo board **Family Finance Manager** → Add members: 5 tài khoản nhóm.
 2. Tạo 5 list đúng quy ước đề cương: `Backlog` · `To Do` · `In Progress` · `Review` · `Done`.
 3. Import: Menu `...` → **Import and Export** → *Import from CSV* → chọn `docs/trello-board.csv` (30 thẻ, đã có tiêu đề/mô tả/list/label).
-   - CSV không gán được member thật (Trello cần username): sau khi import, bật Power-Up **"Card Owner"** hoặc kéo tay thẻ về avatar — 30 thẻ ≈ 15 phút, chia cho Vinh + Kỳ.
+   - CSV không gán được member thật (Trello cần username): sau khi import, bật Power-Up **"Card Owner"** hoặc kéo tay thẻ về avatar — 30 thẻ ≈ 15 phút, chia cho Vinh + Tú.
 4. Thêm **Labels** màu theo Epic: Hạ tầng, Kiến trúc, Cơ sở dữ liệu, Xác thực, Giao dịch, Ngân sách, Báo cáo, DevOps, Kiểm thử, Thiết kế.
 5. Dán link board vào bảng "Tổng hợp liên kết" của file Word trước khi nộp.
 
@@ -67,7 +67,7 @@ Dòng 1–4 và 6 là kiểm tra trên máy từng thành viên (Cường chạy
 
 Lệnh dọn dẹp: `bash scripts/dev-down.sh` (giữ dữ liệu) · `bash scripts/dev-down.sh --purge` (xóa sạch, chạy lại migration từ đầu).
 
-## 4. Figma 4 màn hình (Kỳ — 6 giờ, mốc 23/10)
+## 4. Figma 4 màn hình (Vinh — 6 giờ, hạn 27/10)
 Frame cần có để khớp đề cương & SRS mục 6:
 1. `Dashboard` — 4 card số dư + biểu đồ tròn cơ cấu chi + cột 12 tháng + danh sách cảnh báo.
 2. `Giao dịch` — bảng + filter tháng + modal "Thêm giao dịch" (đúng form UC-07).
@@ -78,10 +78,10 @@ Thiết kế xong: **File → Share → Link (Anyone with the link can view)** �
 ## 5. Việc còn tồn của Sprint 1
 | Mã | Việc | Ai | Hạn |
 |---|---|---|---|
-| S1-01 | Điền MSV + họ tên thật 4 thành viên vào file Word (đang để `B24DCCN...`) | An | 23/10 |
-| S1-02 | Dán link repo + board + Figma vào mục 1 file Word | An | 23/10 |
-| S1-03 | Nộp file Word + Excel + 3 link trên biểu mẫu của giảng viên | An | 23/10 |
-| S1-04 | Chụp 2 ảnh: `docker compose ps` healthy + dashboard Figma | Vinh, Kỳ | 23/10 |
+| S1-01 | Kiểm tra lại **họ tên thật** 4 thành viên ở trang bìa Word (MSV đã điền: An 181, Thành 283, Tú 444, Vinh 227 — tên đang là `Trần Văn Thành / Lê Văn Tú / Phạm Quốc Vinh`) | An | 27/10 |
+| S1-02 | Dán link repo + board + Figma vào mục 1 file Word | An | 27/10 |
+| S1-03 | Nộp file Word + Excel + 3 link trên biểu mẫu của giảng viên | An | 27/10 |
+| S1-04 | Chụp 2 ảnh: `docker compose ps` healthy + dashboard Figma | Vinh, Tú | 27/10 |
 | S1-05 | Quyết định Q-01, Q-02, Q-03 trong SRS mục 10.2 | An +GVHD | 24/10 |
 
 ## 6. Lỗi hay gặp khi chạy lần đầu

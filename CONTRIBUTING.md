@@ -1,5 +1,5 @@
 # Quy trình làm việc nhóm (Git Flow, Commit, PR, Standup)
-Áp dụng cho cả 5 thành viên từ Sprint 1. Đây là mục 7 của đề cương, bản chi tiết để "soi" khi review.
+Áp dụng cho cả 4 thành viên từ Sprint 1. Đây là mục 7 của đề cương, bản chi tiết để "soi" khi review.
 
 ## 1. Nhánh
 | Nhánh | Ý nghĩa | Ai được push trực tiếp |
