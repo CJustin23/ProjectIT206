@@ -24,4 +24,32 @@ public class CurrentUser {
     public Long userId() {
         return require().userId();
     }
+
+    /** fid trong duong dan phai la cua ho dang dang nhap, khong cho phep tham so hoa tenant. */
+    public Long requireFamily(Long familyIdInPath) {
+        AuthPrincipal principal = require();
+        if (familyIdInPath == null || !familyIdInPath.equals(principal.familyId())) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "NOT_FOUND", "Không tìm thấy hộ gia đình.");
+        }
+        return familyIdInPath;
+    }
+
+    /** OWNER / ADMIN moi duoc thay doi danh muc, vi, thanh vien (BR-02). */
+    public AuthPrincipal requireManager() {
+        AuthPrincipal principal = require();
+        if (!principal.canManageFamily()) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "FORBIDDEN_ROLE",
+                "Chỉ chủ hộ hoặc quản trị hộ mới thực hiện được thao tác này.");
+        }
+        return principal;
+    }
+
+    public AuthPrincipal requireWriter() {
+        AuthPrincipal principal = require();
+        if (!principal.canWrite()) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "FORBIDDEN_ROLE",
+                "Quyền Viewer chỉ xem được dữ liệu.");
+        }
+        return principal;
+    }
 }
