@@ -37,6 +37,28 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                              @Param("to") LocalDate to,
                              Pageable pageable);
 
+    /** Giống search() nhưng lọc thêm theo ghi chú (bỏ hoa thường), phục vụ ô tìm kiếm của FE. */
+    @Query("""
+            SELECT t FROM Transaction t
+            WHERE t.familyId = :familyId
+              AND t.deletedAt IS NULL
+              AND (:type IS NULL OR t.type = :type)
+              AND (:categoryId IS NULL OR t.categoryId = :categoryId)
+              AND (:walletId IS NULL OR t.walletId = :walletId)
+              AND (:from IS NULL OR t.transactionDate >= :from)
+              AND (:to IS NULL OR t.transactionDate <= :to)
+              AND LOWER(COALESCE(t.note, '')) LIKE CONCAT('%', :keyword, '%')
+            ORDER BY t.transactionDate DESC, t.id DESC
+            """)
+    Page<Transaction> searchKeyword(@Param("familyId") Long familyId,
+                                    @Param("type") TransactionType type,
+                                    @Param("categoryId") Long categoryId,
+                                    @Param("walletId") Long walletId,
+                                    @Param("from") LocalDate from,
+                                    @Param("to") LocalDate to,
+                                    @Param("keyword") String keyword,
+                                    Pageable pageable);
+
     @Query("""
             SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t
             WHERE t.familyId = :familyId
