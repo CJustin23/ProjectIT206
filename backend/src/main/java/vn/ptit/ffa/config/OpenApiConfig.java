@@ -22,11 +22,11 @@ public class OpenApiConfig {
         final String scheme = "bearerAuth";
         return new OpenAPI()
             .info(new Info()
-                .title("Family Finance Manager API")
+                .title("Budglee API")
                 .version("v1")
-                .description("Đồ án Đề tài 10 — Quản lý thu chi cá nhân và hộ gia đình. "
+                .description("Đồ án Nhóm 03 — Hệ thống Quản lý thu chi cá nhân và gia đình (Budglee). "
                     + "Mọi endpoint nghiệp vụ thuộc /api/v1 và luôn lọc theo family_id của token (BR-01).")
-                .contact(new Contact().name("Nhóm 05 — Nguyễn Trường An"))
+                .contact(new Contact().name("Nhóm 03 — Nguyễn Trường An"))
                 .license(new License().name("MIT")))
             .addSecurityItem(new SecurityRequirement().addList(scheme))
             .components(new Components().addSecuritySchemes(scheme,
