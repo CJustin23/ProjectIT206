@@ -4,7 +4,7 @@
 | Hạng mục | Nội dung |
 |---|---|
 | Học phần | Phát triển Dự án Phần mềm / Đồ án Chuyên ngành |
-| Lớp học phần | HN-KS24-CNTT1 |
+| Lớp học phần | HN-KS24-CNTT3 |
 | Nhóm | Nhóm 05 (04 thành viên) |
 | Đề tài | Đề tài 10 — Personal Finance Management |
 | Giảng viên hướng dẫn | Hồ Xuân Hùng|
