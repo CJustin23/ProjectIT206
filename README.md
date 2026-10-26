@@ -43,7 +43,7 @@ Dừng môi trường: `docker compose down` (giữ dữ liệu). Xóa cả volu
 ## 4. Cấu trúc thư mục
 
 ```
-family-finance-manager/
+ProjectIT206/
 ├── backend/          Spring Boot API (Gradle, Java 21)
 │   └── src/main/resources/db/migration/   Flyway — lịch sử schema
 ├── frontend/         React + Vite + TypeScript
@@ -66,7 +66,7 @@ family-finance-manager/
 
 ## 6. Liên kết dự án
 
-- Repository: https://github.com/cjustin23/family-finance-manager
+- Repository: https://github.com/CJustin23/ProjectIT206  *(nhánh `main` + `develop`)*
 - Trello board: https://trello.com/b/&lt;board-id&gt;/family-finance-manager
 - Figma / SRS: https://www.figma.com/file/&lt;file-id&gt;
 

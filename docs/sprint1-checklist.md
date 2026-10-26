@@ -10,38 +10,31 @@
 | OPS-01 | Dockerfile + docker-compose dev | Vinh | ✅ `docker-compose.yml`, 2 Dockerfile |
 | FE-01 | Prototype Figma 4 màn hình | Kỳ | ⏳ **phải làm tay** (mục 4) |
 
-## 1. Tạo repository và push (An — 10 phút)
-> Làm trên máy có `git` + `gh`. Nếu chưa đăng nhập: `gh auth login` (chọn GitHub.com → HTTPS → Login with a web browser). **Không dán token vào chat.**
+## 1. Repository (ĐÃ PUSH — 22/10/2026)
+Repo thật của nhóm: **https://github.com/CJustin23/ProjectIT206** — đã có `main` + `develop` và commit `chore(sprint1): ...`.
 
+Còn 2 việc phải làm tay trên repo này:
 ```bash
-cd ~/Downloads/family-finance-manager
+# 1.1 Sinh Gradle wrapper để người khác không cần cài Gradle (rồi commit)
+cd backend && gradle wrapper --gradle-version 8.14 && cd ..
+git add gradlew gradlew.bat gradle/ backend/gradle/wrapper
+git commit -m "chore(build): them gradle wrapper"
+git push
 
-# 1.1 sinh Gradle wrapper để người khác không cần cài Gradle
-cd backend && gradle wrapper --gradle-version 8.14 && cd ..     # tạo gradlew, gradle/wrapper/*
-
-# 1.2 tạo repo (tên theo đề cương nhóm)
-gh repo create family-finance-manager --public --source=. --description="De tai 10 - Family Finance Manager (Spring Boot + React + DevOps)"
-
-# 1.3 nhánh chuẩn
-git checkout -b develop
-git add .
-git commit -m "chore: khoi tao Sprint 1 - SRS, ERD, docker compose dev, CI smoke"
-git push -u origin main
-git push -u origin develop
-```
-
-**Branch protection (làm một lần, 2 phút):**
-```bash
-gh api repos/:owner/family-finance-manager/branches/main/protection \
-  -X PUT \
+# 1.2 Branch protection cho main + develop (can gh da login)
+gh auth login            # chon GitHub.com -> HTTPS -> Login with a web browser
+gh api repos/CJustin23/ProjectIT206/branches/main/protection -X PUT \
   -f required_status_checks[strict]=true \
   -F required_status_checks[contexts][]=backend \
   -F required_status_checks[contexts][]=frontend \
   -f enforce_admins=true \
   -f required_pull_request_reviews[required_approving_review_count]=1 \
   -f restrictions=NULL
+# lap lai voi /branches/develop/protection
 ```
-Lặp lại tương tự cho `develop` (đổi `/branches/develop/protection`).
+Nếu không muốn dùng `gh`: Settings → Branches → Add branch protection rule cho `main` và `develop`, tick *Require a pull request before merging* (1 approval) + *Require status checks to pass* (backend, frontend).
+
+**Đề cương yêu cầu:** vào **Settings → Collaborators and teams → Add people** và thêm tài khoản của Giảng viên để thầy review được lịch sử commit (bản Public thì thầy chỉ cần link, nhưng nên add để sau này bật Private vẫn xem được).
 
 ## 2. Board Trello (Vinh — 10 phút)
 1. Tạo board **Family Finance Manager** → Add members: 5 tài khoản nhóm.

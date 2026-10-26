@@ -1,0 +1,11 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jar binary
+*.gradle.kts text
+*.sh text eol=lf
+*.yml text eol=lf
+*.sql text eol=lf
+*.md text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf

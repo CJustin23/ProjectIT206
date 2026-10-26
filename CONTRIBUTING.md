@@ -36,9 +36,9 @@ Scope gợi ý: `auth, family, wallet, category, transaction, budget, goal, repo
 
 ## 4. Kiểm tra trước khi push (local)
 ```bash
-cd backend  && ./gradlew test          # hoặc docker compose exec app ./gradlew test
-cd frontend && npm run typecheck && npm run lint
-bash scripts/smoke-test.sh             # khi đã đổi hạ tầng
+cd backend  && gradle test            # hoặc ./gradlew test khi đã có wrapper
+cd frontend && npm run typecheck      # eslint sẽ bật ở Sprint 3 (thẻ OPS-02)
+bash scripts/smoke-test.sh            # khi đã đổi hạ tầng
 ```
 
 ## 5. Họp & tiến độ
