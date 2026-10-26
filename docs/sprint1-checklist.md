@@ -53,7 +53,7 @@ bash scripts/smoke-test.sh
 | # | Kiểm tra | Kỳ vọng |
 |---|---|---|
 | 1 | `docker compose ps` | 4 service `running`, `ffa-app` = `healthy` |
-| 2 | `curl http://localhost:8090/api/health` | `"status":"UP"`, `"connected":true`, `"tables":14`, `"flywayVersion":"2"` |
+| 2 | `curl http://localhost:8090/api/health` | `"status":"UP"`, `"connected":true`, `"tables":14`, `"flywayVersion":"3"` |
 | 3 | Mở `http://localhost:5173` | trang hiển thị "Backend: UP" + "MySQL: kết nối OK — 14 bảng" |
 | 4 | Adminer `http://localhost:8081` (server `mysql`, user/password trong `.env`) | thấy 13 bảng + 11 dòng `transactions` |
 | 5 | Action `ci` trên GitHub | ✅ **ĐÃ ĐẠT** — run #4 (26/10/2026) 3 job xanh: backend build + test, frontend typecheck + build, compose smoke (`docker compose up -d --wait` rồi `/api/health` trả `"connected":true`) |
