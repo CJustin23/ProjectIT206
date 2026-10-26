@@ -1,13 +1,15 @@
 # SPRINT 1 — Checklist & hướng dẫn chạy
 **Mốc:** 20/10 → 23/10/2026 · **Deliverables theo đề cương:** đặc tả SRS, ERD, khởi tạo GitHub repo, môi trường Docker Compose dev, board Trello.
 
-## 0. Trạng thái 5 thẻ Sprint 1
+## 0. Trạng thái các thẻ Sprint 1
 | Thẻ | Nội dung | Người chính | Trạng thái hiện tại |
 |---|---|---|---|
 | BE-01 | Repo + nhánh + branch protection + CONTRIBUTING | An | ✅ xong khung (còn mục 1–2 dưới đây) |
 | BE-02 | Sơ đồ kiến trúc + luồng xác thực | An | ✅ `docs/architecture.md` |
 | DB-01 | ERD + migration Flyway | Thành | ✅ `docs/ERD.md` + `V1__init_schema.sql` |
 | OPS-01 | Dockerfile + docker-compose dev | Vinh | ✅ `docker-compose.yml`, 2 Dockerfile |
+| DOC-01 | SRS + quy tắc nghiệp vụ + NFR | An | ✅ `docs/SRS.md` (19 UC, 12 BR, 12 NFR) |
+| OPS-02 | Workflow CI (build + test + compose smoke) | Vinh | ✅ 3 job xanh ở run #4 26/10 — còn GHCR + deploy SSH (Sprint 3–4) |
 | FE-01 | Prototype Figma 4 màn hình | Kỳ | ⏳ **phải làm tay** (mục 4) |
 
 ## 1. Repository (ĐÃ PUSH — 22/10/2026)
@@ -58,8 +60,10 @@ bash scripts/smoke-test.sh
 | 2 | `curl http://localhost:8090/api/health` | `"status":"UP"`, `"connected":true`, `"tables":14`, `"flywayVersion":"2"` |
 | 3 | Mở `http://localhost:5173` | trang hiển thị "Backend: UP" + "MySQL: kết nối OK — 14 bảng" |
 | 4 | Adminer `http://localhost:8081` (server `mysql`, user/password trong `.env`) | thấy 13 bảng + 11 dòng `transactions` |
-| 5 | Action `ci` trên GitHub | 3 job xanh với commit đầu tiên |
+| 5 | Action `ci` trên GitHub | ✅ **ĐÃ ĐẠT** — run #4 (26/10/2026) 3 job xanh: backend build + test, frontend typecheck + build, compose smoke (`docker compose up -d --wait` rồi `/api/health` trả `"connected":true`) |
 | 6 | `docker compose down && docker compose up -d` | dữ liệu seed **vẫn còn** (volume hoạt động) |
+
+Dòng 1–4 và 6 là kiểm tra trên máy từng thành viên (Cường chạy một lần rồi báo kết quả); dòng 5 đã được chứng minh bằng CI nên môi trường được coi là chạy được trên máy sạch.
 
 Lệnh dọn dẹp: `bash scripts/dev-down.sh` (giữ dữ liệu) · `bash scripts/dev-down.sh --purge` (xóa sạch, chạy lại migration từ đầu).
 
