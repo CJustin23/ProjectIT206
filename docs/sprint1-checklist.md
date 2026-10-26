@@ -15,15 +15,11 @@
 ## 1. Repository (ĐÃ PUSH — 22/10/2026)
 Repo thật của nhóm: **https://github.com/CJustin23/ProjectIT206** — đã có `main` + `develop` và commit `chore(sprint1): ...`.
 
-Còn 2 việc phải làm tay trên repo này:
-```bash
-# 1.1 Sinh Gradle wrapper để người khác không cần cài Gradle (rồi commit)
-cd backend && gradle wrapper --gradle-version 8.14 && cd ..
-git add gradlew gradlew.bat gradle/ backend/gradle/wrapper
-git commit -m "chore(build): them gradle wrapper"
-git push
+Đã xong: **Gradle wrapper** (`backend/gradlew`, Gradle 8.14 — CI và máy thành viên đều dùng `./gradlew`, không phải cài Gradle).
 
-# 1.2 Branch protection cho main + develop (can gh da login)
+Còn 1 việc phải làm tay trên repo này:
+```bash
+# 1.1 Branch protection cho main + develop (can gh da login)
 gh auth login            # chon GitHub.com -> HTTPS -> Login with a web browser
 gh api repos/CJustin23/ProjectIT206/branches/main/protection -X PUT \
   -f required_status_checks[strict]=true \

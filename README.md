@@ -1,7 +1,7 @@
 # Family Finance Manager
 
 Hệ thống Quản lý Thu chi Cá nhân và Hộ gia đình — đồ án **Đề tài 10**, môn Phát triển Dự án Phần mềm.
-Nhóm 05 · Giảng viên hướng dẫn: ThS. Bùi Thanh Hải · Hạn nộp proposal: 23/10/2026
+Nhóm 05 · Lớp HN-KS24-CNTT3 · Giảng viên hướng dẫn: Hồ Xuân Hùng · Hạn nộp proposal: 23/10/2026
 
 ## 1. Thành viên
 
