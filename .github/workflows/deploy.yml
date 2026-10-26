@@ -1,0 +1,67 @@
+# =============================================================================
+# Sprint 4 (thẻ OPS-02/OPS-03): deploy lên VPS qua SSH.
+# Chỉ chạy khi bật repository variable DEPLOY_ENABLED=true (Settings → Secrets
+# and variables → Actions → Variables) và có 3 secret:
+#   DEPLOY_HOST, DEPLOY_USER, DEPLOY_SSH_KEY (private key, KHÔNG commit)
+# Chạy thủ công: Actions → Deploy → Run workflow → nhập version = tag image.
+# =============================================================================
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Thẻ tag image cần deploy (ví dụ v0.2.0, hoặc latest)'
+        required: true
+        default: 'latest'
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  ssh-deploy:
+    name: Kéo image và khởi động stack trên VPS
+    if: ${{ vars.DEPLOY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dùng version hợp lệ
+        id: ver
+        run: echo "tag=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
+
+      - name: Ghi key deploy
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Deploy
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          USER: ${{ secrets.DEPLOY_USER }}
+          TAG: ${{ steps.ver.outputs.tag }}
+        run: |
+          ssh -o BatchMode=yes "$USER@$HOST" "set -euo pipefail
+            cd /opt/ffa
+            sed -i \"s#^APP_IMAGE=.*#APP_IMAGE=ghcr.io/${{ github.repository_owner }}/ffa-api:$TAG#\" .env.prod
+            sed -i \"s#^WEB_IMAGE=.*#WEB_IMAGE=ghcr.io/${{ github.repository_owner }}/ffa-web:$TAG#\" .env.prod
+            sed -i \"s#^APP_VERSION=.*#APP_VERSION=$TAG#\" .env.prod
+            docker compose -f docker-compose.prod.yml --env-file .env.prod pull
+            docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
+            docker compose -f docker-compose.prod.yml --env-file .env.prod ps"
+
+      - name: Smoke test sau deploy
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          ssh -o BatchMode=yes "$USER@$HOST" "set -euo pipefail
+            cd /opt/ffa
+            DOMAIN=\$(grep '^FFA_DOMAIN=' .env.prod | cut -d= -f2)
+            curl -fsS \"https://\$DOMAIN/api/health\" | tee /tmp/health.json
+            grep -q '\"connected\":true' /tmp/health.json"
+
+      - name: Xoá key khỏi runner
+        if: always()
+        run: rm -f ~/.ssh/id_deploy

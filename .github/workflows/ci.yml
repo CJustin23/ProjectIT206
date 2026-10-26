@@ -32,10 +32,8 @@ jobs:
           distribution: temurin
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.14'
       - name: Build & test
-        run: gradle --no-daemon clean build
+        run: ./gradlew --no-daemon clean build
       - name: Lưu coverage report
         if: always()
         uses: actions/upload-artifact@v4
@@ -45,7 +43,7 @@ jobs:
           retention-days: 7
 
   frontend:
-    name: Frontend typecheck + lint + build
+    name: Frontend typecheck + build
     runs-on: ubuntu-latest
     defaults:
       run:

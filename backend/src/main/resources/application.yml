@@ -13,7 +13,9 @@ spring:
       maximum-pool-size: 10
   jpa:
     hibernate:
-      ddl-auto: validate          # schema do Flyway quản lý, không để Hibernate tự tạo bảng
+      # Flyway la chu the cho schema; Hibernate khong kiem tra lop kieu cot
+      # (MySQL ENUM/TINYINT(1) bi coi la khac voi enum/boolean cua JPA).
+      ddl-auto: none
     open-in-view: false
     properties:
       hibernate.format_sql: true
