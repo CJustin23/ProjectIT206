@@ -43,18 +43,26 @@ Dừng môi trường: `docker compose down` (giữ dữ liệu). Xóa cả volu
 
 ```
 ProjectIT206/
-├── backend/          Spring Boot API (Gradle, Java 21)
-│   └── src/main/resources/db/migration/   Flyway — lịch sử schema
-├── frontend/         React + Vite + TypeScript
-├── docker-compose.yml
-├── .env.example      Các biến môi trường (copy sang .env, .env không commit)
+├── backend/                Spring Boot API (Gradle 8.14 wrapper, Java 21)
+│   ├── gradlew             ./gradlew build — không cần cài Gradle
+│   └── src/main/resources/db/migration/   Flyway V1 schema · V2 seed · V3 version
+├── frontend/               React 18 + Vite 6 + TypeScript + Tailwind
+├── docker-compose.yml      môi trường dev: mysql · app · web · adminer
+├── docker-compose.prod.yml môi trường VPS: db · app · web · nginx edge (HTTPS)
+├── deploy/                 nginx.ffa.conf · web.Dockerfile · env.prod.example
+├── .github/workflows/      ci.yml (build+test+smoke) · release.yml (GHCR) · deploy.yml (SSH)
+├── .env.example            biến môi trường dev (copy sang .env, không commit)
 ├── docs/
-│   ├── SRS.md                 Đặc tả yêu cầu người dùng
+│   ├── SRS.md                 19 use case, quy tắc nghiệp vụ, NFR
 │   ├── ERD.md                 Sơ đồ quan hệ + từ điển dữ liệu
-│   ├── api.md                 Hợp đồng API (freeze ở Sprint 2)
-│   ├── trello-board.csv       Nội dung khởi tạo board
-│   └── sprint1-checklist.md   Đầu việc + mốc ngày Sprint 1
-└── scripts/          dev-up.sh, dev-down.sh, seed.sh
+│   ├── api.md                 Hợp đồng API — đóng băng schema 27/10
+│   ├── architecture.md        Sơ đồ triển khai + luồng JWT
+│   ├── sprint1-checklist.md   Đầu việc + cách chạy + tiêu chí nghiệm thu
+│   ├── TEST-PLAN.md           28 ca kiểm thử + checklist review bảo mật
+│   ├── DEPLOY.md              Runbook VPS: UFW, HTTPS, GHCR, backup/restore, rollback
+│   ├── backlog.csv            31 thẻ backlog
+│   └── trello-board.csv       Nội dung khởi tạo board
+└── scripts/                dev-up.sh · dev-down.sh · smoke-test.sh · api-smoke.sh · backup-db.sh · backup-prod.sh
 ```
 
 ## 5. Quy ước nhánh & commit
