@@ -3,7 +3,6 @@ package vn.ptit.ffa.service;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
@@ -61,10 +60,10 @@ public class TransactionService {
                                                                int size) {
         Page<Transaction> result = keyword == null || keyword.isBlank()
             ? transactions.search(principal.familyId(), type, categoryId, walletId, from, to,
-                PageRequest.of(page, Math.min(size, 100), Sort.by("transactionDate").descending()))
+                PageRequest.of(page, Math.min(size, 100)))
             : transactions.searchKeyword(principal.familyId(), type, categoryId, walletId, from, to,
                 keyword.trim().toLowerCase(),
-                PageRequest.of(page, Math.min(size, 100), Sort.by("transactionDate").descending()));
+                PageRequest.of(page, Math.min(size, 100)));
 
         List<TransactionDto.View> content = result.getContent().stream().map(this::view).toList();
         return new TransactionDto.PageView<>(content, result.getNumber(), result.getSize(),
@@ -142,7 +141,7 @@ public class TransactionService {
     public String exportCsv(AuthPrincipal principal, LocalDate from, LocalDate to) {
         StringBuilder csv = new StringBuilder("id,ngay,loai,danh_muc,vi,so_tien,ghi_chu\n");
         transactions.search(principal.familyId(), null, null, null, from, to,
-                PageRequest.of(0, 10_000, Sort.by("transactionDate").descending()))
+                PageRequest.of(0, 10_000))
             .forEach(row -> csv.append(row.getId()).append(',')
                 .append(row.getTransactionDate()).append(',')
                 .append(row.getType()).append(',')

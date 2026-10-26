@@ -1,9 +1,13 @@
 package vn.ptit.ffa.config;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.interceptor.CacheErrorHandler;
@@ -37,6 +41,7 @@ public class CacheConfig implements CachingConfigurer {
     @Bean
     @Primary
     public org.springframework.cache.CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        var jsonSerializer = new GenericJackson2JsonRedisSerializer(cacheObjectMapper());
         var base = RedisCacheConfiguration.defaultCacheConfig()
             .entryTtl(Duration.ofMinutes(10))
             .disableCachingNullValues()
@@ -44,7 +49,7 @@ public class CacheConfig implements CachingConfigurer {
             .serializeKeysWith(RedisSerializationContext.SerializationPair
                 .fromSerializer(new StringRedisSerializer()))
             .serializeValuesWith(RedisSerializationContext.SerializationPair
-                .fromSerializer(new GenericJackson2JsonRedisSerializer()));
+                .fromSerializer(jsonSerializer));
 
         return RedisCacheManager.builder(connectionFactory)
             .cacheDefaults(base)
@@ -52,6 +57,24 @@ public class CacheConfig implements CachingConfigurer {
             .withCacheConfiguration(CACHE_CATALOG, base.entryTtl(Duration.ofHours(1)))
             .transactionAware()
             .build();
+    }
+
+    /**
+     * Redis luu record DTO (LocalDate, BigDecimal) nen can JavaTimeModule va
+     * default typing de doc lai dung kieu.
+     */
+    private ObjectMapper cacheObjectMapper() {
+        var mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.activateDefaultTyping(BasicPolymorphicTypeValidator.builder()
+                .allowIfSubType("vn.ptit.ffa.")
+                .allowIfSubType("java.util.")
+                .allowIfSubType("java.math.")
+                .allowIfSubType("java.time.")
+                .build(),
+            ObjectMapper.DefaultTyping.EVERYTHING, JsonTypeInfo.As.PROPERTY);
+        return mapper;
     }
 
     @Bean
