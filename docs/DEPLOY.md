@@ -1,7 +1,8 @@
 # HƯỚNG DẪN TRIỂN KHAI PRODUCTION (VPS + Docker + Nginx + HTTPS)
-**Thẻ:** OPS-03, OPS-04, OPS-05, OPS-06 · **Người chính:** Vinh · **Cập nhật:** 26/10/2026
+**Issue Jira (project DUAN):** DUAN-63 (CI/CD GitHub Actions), DUAN-64 (cron backup DB), DUAN-66 (Nginx + HTTPS), DUAN-67 (đóng gói & deploy VPS) · **Người chính:** Lê Hoàng Xuân Vinh (B24DTCN227) — DevOps & QA Lead · **Cập nhật:** 26/10/2026
+Các issue này đang ở trạng thái To Do trên board (hạn 14/11/2026, Sprint 4) — xem [`jira-board.csv`](jira-board.csv). Runbook dưới đây là bản sẵn sàng để chạy khi tới Sprint 4.
 
-Stack production: `db` (MySQL 8) – `app` (Spring Boot jar trong image) – `web` (nginx tĩnh) – `edge` (nginx reverse proxy + HTTPS).
+Stack production của **Budglee**: `db` (MySQL 8) – `redis` (`ffa-redis`, cache L2 số liệu thống kê + hàng đợi thông báo, DUAN-57) – `app` (Spring Boot jar trong image) – `web` (nginx tĩnh) – `edge` (nginx reverse proxy + HTTPS).
 Toàn bộ chạy bằng `docker-compose.prod.yml`, image lấy từ GHCR, **không build source trên server**.
 
 ---
@@ -49,7 +50,7 @@ sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw enable
 sudo ufw status verbose
-# KHÔNG mở 3306, 8080, 8091 ra internet — db chỉ đi qua network nội bộ compose
+# KHÔNG mở 3306, 6379, 8080, 8091 ra internet — db và redis chỉ đi qua network nội bộ compose
 ```
 
 ## 2. Cấu hình lần đầu trên VPS
@@ -122,7 +123,7 @@ sed -i 's#\(ffa-api:\).*#\1v0.1.0#; s#\(ffa-web:\).*#\1v0.1.0#' .env.prod
 docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
 ```
 
-## 6. Backup và restore (OPS-05)
+## 6. Backup và restore (DUAN-64)
 
 ```bash
 # Cron 02:00 hằng ngày, giữ 14 bản:
@@ -139,8 +140,9 @@ gunzip -c backups/ffa-20261101-020001.sql.gz | \
 docker restart ffa-app && curl -fsS https://$FFA_DOMAIN/api/health
 ```
 Nên copy bản dump ra ngoài VPS (Google Drive/S3) — VPS chết thì backup cũng chết.
+`redis_cache` **không** cần backup: Redis chỉ chứa cache số liệu thống kê và thông báo chưa đọc (DUAN-57), mất cache thì hệ thống tự tính lại từ MySQL.
 
-## 7. Theo dõi (OPS-06)
+## 7. Theo dõi (DUAN-67)
 
 ```bash
 docker compose -f docker-compose.prod.yml --env-file .env.prod logs --tail=100 app
@@ -155,7 +157,7 @@ docker ps --format 'table {{.Names}}\t{{.Status}}'
 ## 8. Checklist nghiệm thu triển khai (dán ảnh vào báo cáo cuối kỳ)
 | # | Nội dung | Bằng chứng cần nộp |
 |---|---|---|
-| 1 | `docker compose ps` 4 service `Up (healthy)` | ảnh terminal |
+| 1 | `docker compose ps` 5 service (`db`, `redis`, `app`, `web`, `edge`) `Up (healthy)` | ảnh terminal |
 | 2 | HTTPS hoạt động, A+ trên SSL Labs | ảnh `https://domain` + nháp điểm |
 | 3 | `api/health` trả `"connected":true` | ảnh |
 | 4 | Run workflow "release" xanh, image hiện trên GHCR | ảnh packages |
@@ -172,3 +174,4 @@ docker ps --format 'table {{.Names}}\t{{.Status}}'
 | `404 /api/health` qua HTTPS nhưng 8090 trực tiếp OK | nginx `proxy_pass` sai upstream name | service trong compose tên `app`, không phải `ffa-app` |
 | certbot `Could not bind TCP port 80` | `edge` đang giữ port | dùng `--pre-hook "docker stop ffa-edge"` như mục 3 |
 | Flyway báo `Validate failed: Detected resolved migration not applied` | sửa V1/V2 sau khi đã chạy | không sửa migration đã áp dụng; tạo V3; hoặc DB mới hẳn |
+| Log `cache GET lỗi ... — gọi thẳng xuống nguồn`, API vẫn trả 200 | `ffa-redis` chưa ready hoặc mất kết nối | đúng thiết kế: `LoggingCacheErrorHandler` cho phép suy giảm về MySQL (DUAN-57), không fail API; kiểm tra `docker compose ps redis` |

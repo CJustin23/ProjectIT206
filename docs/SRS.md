@@ -1,28 +1,31 @@
 # ĐẶC TẢ YÊU CẦU HỆ THỐNG (SRS)
-## Hệ thống Quản lý Thu chi Cá nhân và Hộ gia đình — Family Finance Manager
+## Hệ thống Quản lý thu chi cá nhân và gia đình — Budglee (Personal & Family Finance Management)
 
 | Hạng mục | Nội dung |
 |---|---|
 | Học phần | Phát triển Dự án Phần mềm / Đồ án Chuyên ngành |
 | Lớp học phần | HN-KS24-CNTT3 |
-| Nhóm | Nhóm 05 (04 thành viên) |
+| Nhóm | Nhóm 03 (04 thành viên) |
 | Đề tài | Đề tài 10 — Personal Finance Management |
-| Giảng viên hướng dẫn | Hồ Xuân Hùng|
-| Phiên bản tài liệu | 1.0 — Sprint 1 |
-| Ngày cập nhật | 22/10/2026 |
+| Giảng viên hướng dẫn | ThS. Hồ Xuân Hùng |
+| Phiên bản tài liệu | 1.1 — đồng bộ theo báo cáo đề cương (hạn 26/10/2026) |
+| Ngày cập nhật | 26/10/2026 |
+| Board tiến độ | Jira project **DUAN** — https://thenng.atlassian.net/jira/core/projects/DUAN/board · bản xuất: [`jira-board.csv`](jira-board.csv) |
 
-**Người chịu trách nhiệm tài liệu:** Nguyễn Trường An (An) — Leader/Backend Lead.
-**Tham chiếu:** [`ERD.md`](ERD.md) · [`api.md`](api.md) · [`sprint1-checklist.md`](sprint1-checklist.md) · `Ke_Hoach_Do_An_Nhom05_DeTai10.xlsx` (sheet Backlog, RACI).
+**Người chịu trách nhiệm tài liệu:** Nguyễn Trường An (An) — Backend Lead (MSV B24DTCN181).
+**Tham chiếu:** [`ERD.md`](ERD.md) · [`api.md`](api.md) · [`sprint1-checklist.md`](sprint1-checklist.md) · **Lark wiki (đặc tả SRS của nhóm)** · `Ke_Hoach_Do_An_Nhom03_DeTai10.xlsx` (sheet Backlog, RACI) · `docs/jira-board.csv` (38 issue DUAN-30…DUAN-67).
 
 ---
 
 ## 1. GIỚI THIỆU
 
 ### 1.1 Mục đích tài liệu
-Tài liệu này đặc tả hóa yêu cầu chức năng và phi chức năng của hệ thống **Family Finance Manager**, dùng làm:
+Tài liệu này đặc tả hóa yêu cầu chức năng và phi chức năng của hệ thống **Budglee – Personal & Family Finance Management**, dùng làm:
 - căn cứ để nhóm triển khai theo Sprint và để nghiệm thu,
 - căn cứ để Giảng viên đánh giá phạm vi đề tài,
 - "hợp đồng" giữa tầng Frontend và Backend (cùng với [`api.md`](api.md)).
+
+Bản gốc được nhóm soạn và duy trì trên **Lark wiki (đặc tả SRS của nhóm)**; file này là bản đồng bộ trong repo GitHub ([ProjectIT206](https://github.com/CJustin23/ProjectIT206)).
 
 ### 1.2 Phạm vi hệ thống
 Hệ thống ghi nhận **giao dịch thu/chi** theo từng **hộ gia đình**, tổng hợp theo **danh mục**, **ví/tài khoản** và **tháng/quý/năm**; cho phép đặt **ngân sách** và **mục tiêu tiết kiệm**, cảnh báo khi sắp/vượt hạn mức, hiển thị dashboard biểu đồ và xuất báo cáo CSV.
@@ -30,7 +33,8 @@ Hệ thống ghi nhận **giao dịch thu/chi** theo từng **hộ gia đình**,
 ### 1.3 Định nghĩa và viết tắt
 | Viết tắt | Ý nghĩa |
 |---|---|
-| FFMS | Family Finance Manager — hệ thống đang đặc tả |
+| Budglee | Tên sản phẩm — hệ thống đang đặc tả (Personal & Family Finance Management). Trong hạ tầng và mã vẫn giữ định danh `ffa` (`vn.ptit.ffa`, container `ffa-*`) |
+| DUAN | Mã project Jira của nhóm — mọi issue nghiệp vụ có key `DUAN-xx` (DUAN-30…DUAN-67) |
 | Hộ gia đình (Household) | Nhóm người dùng dùng chung dữ liệu thu chi, có chủ hộ |
 | Ví (Wallet) | Nguồn tiền: tiền mặt, ngân hàng, ví điện tử, tiết kiệm, thẻ tín dụng |
 | Danh mục (Category) | Nhóm chi/thu, có cây cha–con, thuộc một hộ |
@@ -40,16 +44,18 @@ Hệ thống ghi nhận **giao dịch thu/chi** theo từng **hộ gia đình**,
 | MoSCoW | Ưu tiên Must / Should / Could / Won't |
 
 ### 1.4 Tài liệu tham chiếu
-1. `Bao_Cao_De_Cuong_Nhom05_DeTai10.docx` — Đề cương dự án sơ bộ (bản nộp 23/10/2026).
-2. `Ke_Hoach_Do_An_Nhom05_DeTai10.xlsx` — Backlog 30 thẻ, phân công RACI, tiến độ, rủi ro, nghiệm thu.
+1. `Bao_Cao_De_Cuong_Nhom03_DeTai10.docx` — Báo cáo đề cương (nêu hạn nộp 26/10/2026).
+2. `Ke_Hoach_Do_An_Nhom03_DeTai10.xlsx` — Kế hoạch, phân công RACI, tiến độ, rủi ro, nghiệm thu.
 3. Đề bài: *Hệ thống quản lý thu chi cá nhân và gia đình — Personal Finance Management*.
+4. Jira project **DUAN** — https://thenng.atlassian.net/jira/core/projects/DUAN/board : 38 issue DUAN-30…DUAN-67, bản xuất tại [`jira-board.csv`](jira-board.csv).
+5. **Lark wiki (đặc tả SRS của nhóm)** — nơi nhóm cập nhật đặc tả hằng ngày; [`docs/SRS.md`](SRS.md) là bản đồng bộ vào repo.
 
 ---
 
 ## 2. MÔ TẢ TỔNG QUAN
 
 ### 2.1 Bối cảnh và vấn đề
-Các gia đình nhỏ hiện ghi chi tiêu bằng sổ tay hoặc tin nhắn, dẫn tới ba vấn đề: (1) không biết tiền đã chảy vào danh mục nào, (2) không có hạn mức nên vượt chi cuối tháng, (3) không theo dõi được khoản tiết kiệm dài hạn. FFMS giải quyết bằng ghi nhận nhanh (dưới 15 giây/giao dịch), đối soát theo hộ gia đình và cảnh báo tự động.
+Các gia đình nhỏ hiện ghi chi tiêu bằng sổ tay hoặc tin nhắn, dẫn tới ba vấn đề: (1) không biết tiền đã chảy vào danh mục nào, (2) không có hạn mức nên vượt chi cuối tháng, (3) không theo dõi được khoản tiết kiệm dài hạn. Budglee giải quyết bằng ghi nhận nhanh (dưới 15 giây/giao dịch), đối soát theo hộ gia đình và cảnh báo tự động.
 
 ### 2.2 Actor và vai trò
 | Actor | Mô tả | Quyền chính |
@@ -64,12 +70,12 @@ Một user có thể thuộc nhiều hộ; mọi truy vấn nghiệp vụ luôn 
 ### 2.3 Môi trường triển khai
 | Môi trường | Mô tả | Cổng |
 |---|---|---|
-| dev (local) | `docker compose up` trên máy thành viên | web 5173, app 8090, mysql 3307, adminer 8081 |
+| dev (local) | `docker compose up` trên máy thành viên | web 5173, app 8090, mysql 3307, adminer 8081; `ffa-redis` 6379 chỉ trong `ffa-net` |
 | staging | VPS Ubuntu, nhánh `develop` tự deploy qua GitHub Actions | 80/443 qua Nginx |
 | production | VPS, nhánh `main` | 443 HTTPS (certbot) |
 
 ### 2.4 Ràng buộc
-- **CL-01** Ngân sách thời gian: 4 sprint, 12 ngày (20/10 → 01/11/2026).
+- **CL-01** Ngân sách thời gian: 4 sprint, 20/10 → 14/11/2026 (S1 20/10–26/10, S2 27/10–02/11, S3 03/11–09/11, S4 10/11–14/11).
 - **CL-02** Bắt buộc đủ 3 lớp: Backend + Frontend + DevOps (điều kiện đề bài).
 - **CL-03** Sinh viên dùng tài nguyên miễn phí: GitHub Free, GHCR, VPS đã có, không dùng dịch vụ trả phí.
 - **CL-04** Tiền lưu `DECIMAL(15,2)`, đơn vị VND, không dùng số thực dấu phẩy động.
@@ -79,34 +85,34 @@ Một user có thể thuộc nhiều hộ; mọi truy vấn nghiệp vụ luôn 
 ### 2.5 Giả định và phụ thuộc
 - Mỗi hộ có ≤ 8 thành viên, ≤ 200 giao dịch/tháng trong dữ liệu demo.
 - Không tích hợp thật với ngân hàng (chỉ mô phỏng, theo đúng phạm vi đề bài).
-- Ảnh minh chứng pipeline/board cần chụp trước 01/11/2026.
+- Ảnh minh chứng pipeline/board cần chụp trước 14/11/2026.
 
 ---
 
 ## 3. YÊU CẦU CHỨC NĂNG
 
 ### 3.1 Danh sách use case
-| Mã | Use case | Actor | Ưu tiên | Sprint | Thẻ backlog |
+| Mã | Use case | Actor | Ưu tiên | Sprint | Issue Jira (DUAN) |
 |---|---|---|---|---|---|
-| UC-01 | Đăng ký tài khoản | Guest | Must | S2 | BE-03, FE-03 |
-| UC-02 | Đăng nhập / đăng xuất / làm mới token | Guest, Member | Must | S2 | BE-03, FE-03 |
-| UC-03 | Tạo hộ gia đình và trở thành chủ hộ | Member | Must | S2 | BE-03, FE-07 |
-| UC-04 | Mời / gỡ thành viên, đổi vai trò | HeadOfFamily | Should | S3 | FE-07 |
-| UC-05 | Quản lý ví (thêm, sửa, ẩn) | HeadOfFamily | Must | S2 | BE-04, FE-04 |
-| UC-06 | Quản lý danh mục thu/chi (cha–con) | HeadOfFamily | Must | S2 | BE-04, FE-04 |
-| UC-07 | Thêm giao dịch thu/chi | Member | Must | S2 | BE-05, FE-04 |
-| UC-08 | Sửa / xóa (khôi phục) giao dịch | Member, HeadOfFamily | Must | S2 | BE-05, FE-04 |
-| UC-09 | Tìm kiếm, lọc, phân trang giao dịch | Member | Must | S2 | BE-05, FE-04 |
-| UC-10 | Chuyển tiền giữa hai ví | Member | Must | S3 | BE-05 |
-| UC-11 | attachment hóa đơn (ảnh ≤ 5MB) | Member | Could | S3 | BE-10 |
-| UC-12 | Đặt ngân sách theo danh mục & chu kỳ | HeadOfFamily | Must | S3 | BE-06, FE-06 |
-| UC-13 | Nhận cảnh báo 80% / vượt ngân sách | Member | Should | S3 | BE-08, FE-06 |
-| UC-14 | Xem dashboard tổng quan + biểu đồ | Member | Must | S3 | BE-07, FE-05 |
-| UC-15 | Báo cáo tháng/quý/năm và xuất CSV | Member | Should | S3 | BE-07, BE-10 |
-| UC-16 | Mục tiêu tiết kiệm + đóng góp | Member | Should | S3 | BE-09, FE-08 |
-| UC-17 | Giao dịch định kỳ (lương, tiền thuê) | Member | Could | S3 | BE-09 |
-| UC-18 | Quản trị user/hộ, khóa tài khoản | Admin | Should | S4 | BE-03 |
-| UC-19 | Xem lịch sử thao tác (audit log) | Admin, HeadOfFamily | Could | S4 | OPS-06 |
+| UC-01 | Đăng ký tài khoản | Guest | Must | S2 | DUAN-39 |
+| UC-02 | Đăng nhập / đăng xuất / làm mới token | Guest, Member | Must | S2 | DUAN-39, DUAN-40 |
+| UC-03 | Tạo hộ gia đình và trở thành chủ hộ | Member | Must | S2 | DUAN-38, DUAN-39 |
+| UC-04 | Mời / gỡ thành viên, đổi vai trò | HeadOfFamily | Should | S3 | DUAN-40, DUAN-42 |
+| UC-05 | Quản lý ví (thêm, sửa, ẩn) | HeadOfFamily | Must | S3 | DUAN-48, DUAN-51 |
+| UC-06 | Quản lý danh mục thu/chi (cha–con) | HeadOfFamily | Must | S3 | DUAN-49, DUAN-51 |
+| UC-07 | Thêm giao dịch thu/chi | Member | Must | S3 | DUAN-50, DUAN-52 |
+| UC-08 | Sửa / xóa (khôi phục) giao dịch | Member, HeadOfFamily | Must | S3 | DUAN-50, DUAN-52 |
+| UC-09 | Tìm kiếm, lọc, phân trang giao dịch | Member | Must | S3 | DUAN-50, DUAN-52 |
+| UC-10 | Chuyển tiền giữa hai ví | Member | Must | S3 | DUAN-50 |
+| UC-11 | attachment hóa đơn (ảnh ≤ 5MB) | Member | Could | S4 | — (backlog mở rộng, chưa nằm trong 38 issue DUAN) |
+| UC-12 | Đặt ngân sách theo danh mục & chu kỳ | HeadOfFamily | Must | S3 | DUAN-53 |
+| UC-13 | Nhận cảnh báo 80% / vượt ngân sách | Member | Should | S3 | DUAN-55 |
+| UC-14 | Xem dashboard tổng quan + biểu đồ | Member | Must | S3 | DUAN-54, DUAN-57 |
+| UC-15 | Báo cáo tháng/quý/năm và xuất CSV | Member | Should | S4 | DUAN-61, DUAN-62 |
+| UC-16 | Mục tiêu tiết kiệm + đóng góp | Member | Should | S4 | DUAN-58, DUAN-59 |
+| UC-17 | Giao dịch định kỳ (lương, tiền thuê) | Member | Could | S4 | — (backlog mở rộng, chưa nằm trong 38 issue DUAN) |
+| UC-18 | Quản trị user/hộ, khóa tài khoản | Admin | Should | S4 | — (đăng ký sau nghiệm thu, dựa trên DUAN-40) |
+| UC-19 | Xem lịch sử thao tác (audit log) | Admin, HeadOfFamily | Could | S4 | — (backlog mở rộng, chưa nằm trong 38 issue DUAN) |
 
 ### 3.2 Sơ đồ use case (Mức 1)
 ```mermaid
@@ -147,7 +153,7 @@ flowchart LR
 |---|---|
 | **Actor** | Member |
 | **Tiền điều kiện** | Đã đăng nhập, đang ở trong một hộ, có ≥ 1 ví và ≥ 1 danh mục |
-| **Luồng chính** | 1. Chọn loại (Thu/Chi) → 2. Chọn ví, danh mục, nhập số tiền, ngày, ghi chú → 3. `POST /api/v1/transactions` → 4. Validate + ghi `transactions` → 5. Cache báo cáo bị invalidate → 6. Trả về bản ghi + số dư ví mới |
+| **Luồng chính** | 1. Chọn loại (Thu/Chi) → 2. Chọn ví, danh mục, nhập số tiền, ngày, ghi chú → 3. `POST /api/v1/transactions` → 4. Validate + ghi `transactions` → 5. Invalidate cache số liệu báo cáo (Redis L2 + Caffeine L1, key `report:{familyId}:{month}`) → 6. Trả về bản ghi + số dư ví mới |
 | **Luồng phụ** | 4a. Số tiền ≤ 0 → `422 TX_AMOUNT_INVALID`; 4b. Danh mục sai `kind` so với loại → `422 TX_CATEGORY_MISMATCH`; 4c. Ngày tương lai → cảnh báo nhưng vẫn cho phép |
 | **Hậu điều kiện** | Số dư ví thay đổi; dashboard/số liệu tháng tính lại |
 | **Quy tắc** | BR-03, BR-04, BR-05 |
@@ -173,7 +179,7 @@ flowchart LR
 | | |
 |---|---|
 | **Actor** | Member |
-| **Luồng chính** | 1. `GET /api/v1/reports/dashboard?month=2026-10` → 2. Hệ thống trả: tổng thu, tổng chi, kết dư, số dư từng ví, top 5 danh mục chi, 12 tháng gần nhất, ngân sách sắp vượt |
+| **Luồng chính** | 1. `GET /api/v1/reports/dashboard?month=2026-10` → 2. Hệ thống trả: tổng thu, tổng chi, kết dư, số dư từng ví, top 5 danh mục chi, 12 tháng gần nhất, ngân sách sắp vượt (số liệu thống kê lấy từ Redis cache — DUAN-57; miss thì tính từ MySQL và ghi lại cache) |
 | **Luồng phụ** | 2a. Tháng chưa có dữ liệu → trả mảng rỗng + `0`, UI hiển thị empty state (Rủi ro R08) |
 | **Quy tắc** | BR-09, BR-10 |
 
@@ -218,6 +224,7 @@ flowchart LR
 | NFR-10 | Tương thích | Chrome/Edge/Firefox bản mới nhất; màn hình 375 → 1440 px | smoke UI |
 | NFR-11 | Trải nghiệm | Tiếng Việt là ngôn ngữ chính, định dạng VND `1.000.000 ₫`; thao tác thêm giao dịch ≤ 3 bước | test người dùng nội bộ |
 | NFR-12 | Tuân thủ | Không lưu dữ liệu cá nhân nhạy cảm; audit log cho thao tác xóa hàng loạt | review |
+| NFR-13 | Hiệu năng / cache | Số liệu thống kê dashboard–báo cáo được cache L2 trên **Redis** (DUAN-57, TTL 5–10 phút, prefix `budglee:`), Caffeine là L1 in-process cho danh mục/ví; Redis lỗi thì API **suy giảm về MySQL**, không fail request | test tắt container `ffa-redis` rồi gọi `/reports/dashboard` (xem `backend/.../config/CacheConfig.java`, `cache/LoggingCacheErrorHandler.java`) |
 
 ---
 
@@ -225,7 +232,7 @@ flowchart LR
 
 Chi tiết trong [`ERD.md`](ERD.md) (sơ đồ Mermaid + từ điển dữ liệu + index). Thực tế triển khai: **13 bảng** — `users, families, family_members, categories, wallets, transactions, transaction_attachments, budgets, savings_goals, goal_contributions, refresh_tokens, notifications, audit_logs` (+ bảng `flyway_schema_history` do công cụ migration tạo).
 
-Phát triển so với thẻ DB-01 trong backlog (5 bảng): nhóm mở rộng thêm **ví**, **mục tiêu tiết kiệm** và **audit** vì đề bài yêu cầu "mục tiêu tiết kiệm" và DevOps yêu cầu "bảo vệ dữ liệu".
+Phát triển so với phạm vi ERD ban đầu trên Jira (DUAN-32 — khảo sát nghiệp vụ & ERD, DUAN-33 — chuẩn hóa các bảng User/Wallet/Category/Transaction/Budget/Goal): nhóm mở rộng thêm **ví**, **mục tiêu tiết kiệm** và **audit** vì đề bài yêu cầu "mục tiêu tiết kiệm" và DevOps yêu cầu "bảo vệ dữ liệu". Kịch bản migration do Tú phụ trách (DUAN-44), seed data nằm ở DUAN-45/DUAN-46.
 
 ---
 
@@ -244,7 +251,7 @@ Phát triển so với thẻ DB-01 trong backlog (5 bảng): nhóm mở rộng t
 | 9 | Hộ gia đình | `/family/members` | UC-03, UC-04 | lời mời, đổi vai trò |
 | 10 | Quản trị | `/admin/users` | UC-18 | chỉ Admin |
 
-Điều hướng: sidebar trái cố định (desktop) / drawer (mobile), header có chọn hộ + avatar. Prototype Figma: thẻ FE-01.
+Điều hướng: sidebar trái cố định (desktop) / drawer (mobile), header có chọn hộ + avatar. Prototype Figma: DUAN-30 (giao diện UI/UX) và DUAN-31 (wireframe màn hình báo cáo) — Thành, đã Done trong Sprint 1.
 
 ---
 
@@ -253,18 +260,19 @@ Phát triển so với thẻ DB-01 trong backlog (5 bảng): nhóm mở rộng t
 Danh sách endpoint, payload mẫu và mã lỗi chuẩn trong [`api.md`](api.md). Nguyên tắc:
 - Base path `/api/v1`, JSON UTF-8, tiền là **number** (VND), ngày `YYYY-MM-DD`, thời gian ISO-8601 `+07:00`.
 - Lỗi theo cấu trúc `{ code, message, details[] }` — FE hiển thị theo `code`, không parse chuỗi message.
-- **Schema đóng băng từ 27/10/2026** (hết Sprint 2); thay đổi sau mốc này phải qua PR có label `api-breaking` và cả 2 phía review — đây là biện pháp giảm thiểu Rủi ro R01.
+- **Schema đóng băng từ 02/11/2026** (hết Sprint 2); thay đổi sau mốc này phải qua PR có label `api-breaking` và cả 2 phía review — đây là biện pháp giảm thiểu Rủi ro R01.
 
 ---
 
 ## 8. TIÊU CHÍ NGHIỆM THU
 
-### 8.1 Definition of Done (mọi thẻ)
+### 8.1 Definition of Done (mọi issue Jira)
 - [ ] Code merge vào `develop` qua PR, có ≥ 1 approve, CI xanh.
 - [ ] Không còn `TODO` cá nhân; tên biến/ hàm tiếng Anh thống nhất.
 - [ ] Có test hoặc ít nhất 1 bước kiểm chứng thủ công được ghi trong PR.
 - [ ] Tài liệu liên quan cập nhật (`api.md`, `README`, sheet Tiến độ).
 - [ ] Chạy được trên môi trường dev bằng `docker compose up` sạch (xóa volume vẫn lên được).
+- [ ] Trạng thái issue trên board **DUAN** chuyển sang `Done` kèm link PR.
 
 ### 8.2 Ngưỡng nghiệm thu đề tài (đọc sheet `Nghiem thu` trong file Excel)
 | Mã | Tiêu chí | Cách kiểm tra |
@@ -282,16 +290,19 @@ Danh sách endpoint, payload mẫu và mã lỗi chuẩn trong [`api.md`](api.md
 
 ## 9. MA TRẬN LẶP (traceability)
 
-| Epic | Use case | Thẻ backlog | Sprint |
+| Epic | Use case | Issue Jira (DUAN) | Sprint |
 |---|---|---|---|
-| Hạ tầng & kiến trúc | — | BE-01, BE-02 | S1 |
-| Cơ sở dữ liệu | tất cả | DB-01, DB-02 | S1, S2 |
-| Xác thực & phân quyền | UC-01..UC-04, UC-18 | BE-03, FE-03 | S2 |
-| Giao dịch | UC-05..UC-11 | BE-04, BE-05, BE-10, FE-04 | S2, S3 |
-| Ngân sách & mục tiêu | UC-12, UC-13, UC-16, UC-17 | BE-06, BE-08, BE-09, FE-06, FE-08 | S3 |
-| Báo cáo | UC-14, UC-15 | BE-07, FE-05 | S3 |
-| Tài liệu & test | — | BE-11, BE-12, QA-01, QA-02 | S2–S4 |
-| DevOps | — | OPS-01..OPS-06 | S1, S3, S4 |
+| Hạ tầng & kiến trúc | — | DUAN-34, DUAN-35, DUAN-36, DUAN-37 | S1 |
+| Cơ sở dữ liệu | tất cả | DUAN-32, DUAN-33, DUAN-44, DUAN-45, DUAN-46, DUAN-56 | S1, S2, S3 |
+| Thiết kế UX & khung UI | mọi màn hình | DUAN-30, DUAN-31, DUAN-41, DUAN-42, DUAN-43 | S1, S2 |
+| Xác thực & phân quyền | UC-01..UC-04, UC-18 | DUAN-38, DUAN-39, DUAN-40 | S2 |
+| Giao dịch | UC-05..UC-11 | DUAN-48, DUAN-49, DUAN-50, DUAN-52 | S3 |
+| Ngân sách & mục tiêu | UC-12, UC-13, UC-16, UC-17 | DUAN-53, DUAN-55, DUAN-58, DUAN-59 | S3, S4 |
+| Báo cáo & thống kê | UC-14, UC-15 | DUAN-54, DUAN-57, DUAN-61, DUAN-62 | S3, S4 |
+| Tài liệu & test | — | DUAN-65 | S4 |
+| DevOps | — | DUAN-47, DUAN-63, DUAN-64, DUAN-66, DUAN-67 | S2, S4 |
+
+Toàn bộ 38 issue DUAN-30…DUAN-67 kèm owner / trạng thái / hạn nằm trong [`jira-board.csv`](jira-board.csv) (bản xuất từ board DUAN ngày 26/10/2026).
 
 ---
 
@@ -303,10 +314,11 @@ Danh sách endpoint, payload mẫu và mã lỗi chuẩn trong [`api.md`](api.md
 | 0.1 | 20/10/2026 | An | Khung mục + danh sách actor |
 | 0.2 | 21/10/2026 | An, Tú | Bổ sung 19 use case, quy tắc BR |
 | 1.0 | 22/10/2026 | An | Hoàn thiện NFR, tiêu chí nghiệm thu, traceability — nộp kèm proposal |
+| 1.1 | 26/10/2026 | An | Đồng bộ tên Budglee, Nhóm 03, MSV B24DTCN, lịch sprint và Redis theo báo cáo đề cương. |
 
 ### 10.2 Câu hỏi còn mở
 | Mã | Câu hỏi | Người quyết | Hạn |
 |---|---|---|---|
 | Q-01 | Cho phép Member sửa giao dịch của người khác trong hộ? | An + Giảng viên | 24/10/2026 |
-| Q-02 | Số dư ví có lưu cột riêng hay tính suy ra từ giao dịch? (đề xuất: tính suy ra + cache) | Thành | 24/10/2026 |
+| Q-02 | Số dư ví có lưu cột riêng hay tính suy ra từ giao dịch? (đề xuất: tính suy ra + cache Redis L2) | Thành | 24/10/2026 |
 | Q-03 | Mục tiêu tiết kiệm có gắn ví cụ thể không? | Tú | 25/10/2026 |

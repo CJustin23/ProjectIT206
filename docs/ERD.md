@@ -1,5 +1,5 @@
-# ERD — Mô hình quan hệ dữ liệu Family Finance Manager
-**Thẻ backlog:** DB-01 · **Chịu trách nhiệm:** Thành (Database & Data Lead) · **Đối chiếu:** `backend/src/main/resources/db/migration/V1__init_schema.sql`
+# ERD — Mô hình quan hệ dữ liệu Budglee (Personal & Family Finance Management)
+**Issue Jira:** DUAN-32 (khảo sát nghiệp vụ & ERD) · DUAN-33 (chuẩn hóa CSDL) · DUAN-44 (Flyway migration) · DUAN-56 (đánh chỉ mục) — xem [`jira-board.csv`](jira-board.csv) · **Chịu trách nhiệm:** Bàng Trọng Tú (B24DTCN444) — Database & Data Lead · **Đối chiếu:** `backend/src/main/resources/db/migration/V1__init_schema.sql`
 
 ## 1. Sơ đồ quan hệ (Mermaid — GitHub/GitLab render trực tiếp)
 
@@ -165,7 +165,7 @@ erDiagram
 | `notifications` | Cảnh báo ngân sách | — | `read_at` rỗng = chưa đọc |
 | `audit_logs` | Lịch sử thao tác | — | `payload JSON` diff trước/sau |
 
-## 3. Index phục vụ báo cáo (NFR-05)
+## 3. Index phục vụ báo cáo (NFR-05 — DUAN-56, Tú)
 
 | Index | Bảng | Query được phục vụ |
 |---|---|---|
@@ -174,6 +174,8 @@ erDiagram
 | `idx_tx_category_date` | transactions (category_id, transaction_date) | cơ cấu chi theo danh mục |
 | `idx_bg_family_period` | budgets (family_id, period_start, period_end) | so sánh chi thực tế với hạn mức |
 | `uq_category_name`, `uq_wallet_name` | categories, wallets | chống trùng tên trong cùng hộ |
+
+Kết quả của các truy vấn báo cáo tháng ở mục 4 (tổng thu/chi, cơ cấu danh mục, % ngân sách) chính là dữ liệu được **Redis cache L2** theo key `budglee:dashboard:{familyId}:{month}` — DUAN-57, do Tú phụ trách (Sprint 3). Hàng đợi thông báo cảnh báo ngân sách cũng dùng Redis; MySQL vẫn là nguồn dữ liệu đúng, thiếu Redis chỉ làm chậm truy vấn chứ không làm fail API.
 
 ## 4. Truy vấn nghiệm thu (dùng khi kiểm tra AC-02, AC-03)
 
@@ -221,7 +223,7 @@ WHERE w.family_id = 1 GROUP BY w.id, w.name;
 | Quyết định | Lý do | Đánh đổi |
 |---|---|---|
 | Multi-tenant theo `family_id` trong từng bảng (không tách schema) | đơn giản, đủ cho quy mô lớp học | mọi query phải nhớ điều kiện `family_id` (bọc trong repository layer) |
-| Số dư ví **tính suy ra**, không lưu cột chạy | tránh lệch dữ liệu khi sửa/xóa giao dịch | query nặng hơn → cache Caffeine theo `(family, month)` |
+| Số dư ví **tính suy ra**, không lưu cột chạy | tránh lệch dữ liệu khi sửa/xóa giao dịch | query nặng hơn → cache kết quả theo `(family, month)`: Redis là tầng L2 (DUAN-57), Caffeine là L1 in-process |
 | `TRANSFER` là một bản ghi, không hai | báo cáo thu/chi không bị nhiễu | SQL số dư phải xử lý 2 chiều |
 | Soft delete giao dịch | nghiệp vụ hoàn tác + audit | mọi câu truy vấn thêm `deleted_at IS NULL` |
 | Danh mục riêng theo hộ | hộ khác nhau habits chi tiêu khác nhau | cần seed template khi tạo hộ (Q-03) |
