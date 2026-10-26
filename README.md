@@ -72,9 +72,9 @@ ProjectIT206/
 
 ## 7. Trạng thái theo sprint
 
-| Sprint | Nội dung | Tình trạng |
-|--------|----------|------------|
-| 1 (20–23/10) | SRS, ERD, khởi tạo repo, Docker Compose dev, Trello board | Đang làm |
-| 2 (25–27/10) | Auth, CRUD danh mục/ví/giao dịch, khung UI | Chưa bắt đầu |
-| 3 (28–30/10) | Ngân sách, báo cáo, biểu đồ, CI tự động | Chưa bắt đầu |
-| 4 (31/10–01/11) | Kiểm thử, đóng gói, deploy VPS + HTTPS | Chưa bắt đầu |
+| Sprint | Nội dung | Tình trạng (cập nhật 26/10/2026) |
+|--------|----------|----------------------------------|
+| 1 (20–23/10) | SRS, ERD, khởi tạo repo, Docker Compose dev, Trello board | ✅ Đã xong phần kỹ thuật — còn: import Trello, branch protection, Figma |
+| 2 (25–27/10) | Auth, CRUD danh mục/ví/giao dịch, khung UI | 🟡 Đang triển khai |
+| 3 (28–30/10) | Ngân sách, báo cáo, biểu đồ, CI tự động | ⚪ Chưa bắt đầu (job compose-smoke đã có khung) |
+| 4 (31/10–01/11) | Kiểm thử, đóng gói, deploy VPS + HTTPS | ⚪ Chưa bắt đầu (scripts/backup-db.sh đã sẵn) |
