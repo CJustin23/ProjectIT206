@@ -90,3 +90,10 @@ jobs:
         run: |
           curl -fsS http://localhost:8090/api/health | tee health.json
           grep -q '"connected":true' health.json
+      - name: Redis sống và trả lời PONG
+        run: |
+          docker compose --env-file .env exec -T redis redis-cli ping | grep -q PONG
+      - name: API smoke end-to-end (DUAN-65)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq jq >/dev/null
+          bash scripts/api-smoke.sh http://localhost:8090 an@ffa.dev password

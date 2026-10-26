@@ -1,5 +1,5 @@
-# HỢP ĐỒNG API — Family Finance Manager
-**Thẻ backlog:** BE-11 · **Chịu trách nhiệm:** Tú (Backend Engineer) — review An · **Đóng băng schema:** 27/10/2026 (hết Sprint 2)
+# HỢP ĐỒNG API — Budglee (Personal & Family Finance Management)
+**Issue Jira:** DUAN-39, DUAN-40, DUAN-48…DUAN-50, DUAN-58 (API cốt lõi — An, Backend Lead) · DUAN-53, DUAN-54, DUAN-61 (API ngân sách, thống kê, xuất báo cáo — Thành) · bản xuất issue: [`jira-board.csv`](jira-board.csv) · **Chịu trách nhiệm tài liệu:** An — review Thành · **Đóng băng schema:** 02/11/2026 (hết Sprint 2)
 
 - Base URL dev: `http://localhost:8090/api/v1` · Swagger UI: `/swagger-ui.html` · OpenAPI JSON: `/v3/api-docs`
 - Auth: `Authorization: Bearer <accessToken>` · Hết hạn → `POST /auth/refresh`
@@ -25,12 +25,19 @@
 | 403 | `FORBIDDEN_ROLE` | Member gọi API của HeadOfFamily |
 | 404 | `NOT_FOUND` | id không tồn tại **hoặc** thuộc hộ khác (cố ý gộp để dò not-found) |
 | 409 | `BUDGET_CONFLICT` | version optimistic locking lỗi |
+| 409 | `EMAIL_EXISTS` | đăng ký trùng email |
+| 409 | `CATEGORY_IN_USE` / `WALLET_IN_USE` | xoá danh mục/ví còn giao dịch (BR-12) |
+| 409 | `CATEGORY_NAME_EXISTS` / `WALLET_NAME_EXISTS` / `FAMILY_NAME_EXISTS` / `ALREADY_MEMBER` | trùng khoá buộc (unique) |
+| 422 | `TX_CATEGORY_MISMATCH` | danh mục sai loại thu/chi so với giao dịch |
+| 400 | `TX_TRANSFER_TARGET_REQUIRED` / `TX_TRANSFER_SAME_WALLET` / `TX_TRANSFER_NOT_ALLOWED` | chuyển khoản thiếu/sai ví nhận |
+| 400 | `OWNER_IMMUTABLE` / `GOAL_CANCELLED` / `VALIDATION_FAILED` | vi phạm quy tắc nghiệp vụ hoặc body sai |
+| 401 | `REFRESH_TOKEN_REVOKED` | refresh token đã dùng hoặc hết hạn |
 | 423 | `ACCOUNT_LOCKED` | 5 lần đăng nhập sai / 15 phút |
 | 429 | `RATE_LIMITED` | vượt 100 request/phút/user |
 
 ## 2. Danh sách endpoint
 
-### 2.1 Xác thực (`/auth`) — Sprint 2
+### 2.1 Xác thực (`/auth`) — Sprint 2 (DUAN-39, DUAN-40)
 | Method | Path | Quyền | Mô tả |
 |---|---|---|---|
 | POST | `/auth/register` | public | `{email, password, fullName}` → 201 + token |
@@ -41,7 +48,7 @@
 | PATCH | `/users/me` | Member | đổi fullName, phone, avatar, familyId hiện tại |
 | POST | `/auth/forgot-password` | public | gửi email OTP (dev: log ra console) |
 
-### 2.2 Hộ gia đình (`/families`) — Sprint 2–3
+### 2.2 Hộ gia đình (`/families`) — Sprint 2–3 (DUAN-38, DUAN-40)
 | Method | Path | Quyền | Mô tả |
 |---|---|---|---|
 | POST | `/families` | Member | tạo hộ, người tạo tự thành `OWNER` |
@@ -51,7 +58,7 @@
 | PATCH | `/families/{id}/members/{userId}` | HeadOfFamily | đổi role |
 | DELETE | `/families/{id}/members/{userId}` | HeadOfFamily | gỡ thành viên (BR-11) |
 
-### 2.3 Danh mục & ví — Sprint 2
+### 2.3 Danh mục & ví — Sprint 3 (DUAN-48, DUAN-49)
 | Method | Path | Quyền | Mô tả |
 |---|---|---|---|
 | GET | `/families/{fid}/categories?kind=EXPENSE` | Member | cây 2 cấp |
@@ -62,7 +69,7 @@
 | POST | `/families/{fid}/wallets` | HeadOfFamily | `{name, type, openingBalance}` |
 | PATCH | `/families/{fid}/wallets/{id}` | HeadOfFamily | archive/unarchive |
 
-### 2.4 Giao dịch — Sprint 2
+### 2.4 Giao dịch — Sprint 3 (DUAN-50)
 ```jsonc
 // POST /api/v1/transactions
 {
@@ -93,9 +100,9 @@
 | PUT | `/transactions/{id}` | sửa (Member chỉ sửa của mình — Q-01) |
 | DELETE | `/transactions/{id}` | soft delete |
 | POST | `/transactions/{id}/attachments` | multipart `file` ≤ 5MB |
-| GET | `/transactions/export?from&to&format=csv` | stream CSV (BE-10) |
+| GET | `/transactions/export?from&to&format=csv` | stream CSV (DUAN-61) |
 
-### 2.5 Ngân sách & mục tiêu — Sprint 3
+### 2.5 Ngân sách & mục tiêu — Sprint 3 (DUAN-53) & Sprint 4 (DUAN-58)
 | Method | Path | Mô tả |
 |---|---|---|
 | GET | `/budgets?periodStart=2026-10-01` | trả kèm `used`, `percent`, `status` = `SAFE/WARNING/OVER` |
@@ -105,7 +112,9 @@
 | POST | `/goals` · PATCH `/goals/{id}` · DELETE `/goals/{id}` | CRUD |
 | POST | `/goals/{id}/contributions` | `{amount, walletId, contributedOn}` |
 
-### 2.6 Báo cáo — Sprint 3
+### 2.6 Báo cáo — Sprint 3 (DUAN-54, DUAN-57) & Sprint 4 (DUAN-61, DUAN-62)
+Số liệu thống kê của các endpoint này được phục vụ từ **Redis cache L2** (DUAN-57, key `budglee:dashboard:*` / `budglee:reports:*`), Caffeine là L1; Redis lỗi thì hệ thống tính trực tiếp từ MySQL.
+
 | Method | Path | Mô tả |
 |---|---|---|
 | GET | `/reports/dashboard?month=2026-10` | `{income, expense, net, wallets[], topCategories[], trend12Months[], budgetAlerts[]}` |

@@ -38,6 +38,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     implementation 'com.github.ben-manes.caffeine:caffeine'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
     implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
@@ -66,4 +67,10 @@ springBoot {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// Nguon Java chua chuoi tieng Viet (thong bao loi, mo ta Swagger) -> ep UTF-8
+// de khong bi lech ma giua may dev Windows va runner Linux.
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }

@@ -1,7 +1,7 @@
 # KẾ HOẠCH KIỂM THỬ & CHECKLIST REVIEW BẢO MẬT
-**Thẻ:** QA-01, OPS-04 · **Người chính:** Vinh · **Hạn:** 31/10/2026
+**Issue Jira (project DUAN):** DUAN-65 (bộ Test Cases + kiểm thử tích hợp API), DUAN-63 (CI chạy test), kiểm thử bảo mật do Vinh phụ trách · **Người chính:** Lê Hoàng Xuân Vinh (B24DTCN227) — DevOps & QA Lead · **Hạn:** 14/11/2026 (Sprint 4)
 
-Mọi ca kiểm thử (TC) gắn với use case trong `docs/SRS.md` và tiêu chí chấp nhận AC. Cột "Cách chạy" chỉ ra lệnh thật để chạy lại được.
+Mọi ca kiểm thử (TC) của hệ thống **Budglee** gắn với use case trong `docs/SRS.md` và tiêu chí chấp nhận AC. Cột "Cách chạy" chỉ ra lệnh thật để chạy lại được.
 
 ## 1. Layers kiểm thử
 | Layer | Phạm vi | Công cụ | Chạy ở đâu |
@@ -9,7 +9,7 @@ Mọi ca kiểm thử (TC) gắn với use case trong `docs/SRS.md` và tiêu ch
 | Unit | Logic service: tính tổng, tỷ trọng, ngưỡng ngân sách, quy đổi ngày | JUnit 5 + Mockito | `./gradlew test` + CI job Backend |
 | API/Contract | payload, mã lỗi, phân quyền | `scripts/api-smoke.sh` (curl + jq) | CI job Compose smoke |
 | Tích hợp end-to-end | FE gọi BE qua Docker network | thao tác tay trên `http://localhost:5173` | máy từng thành viên + video demo |
-| Phi chức năng | NFR-01 (phản hồi < 2s), NFR-05 (cache), NFR-07 (backup) | k6 hoặc `ab`, đồng hồ + ảnh | trước 01/11 |
+| Phi chức năng | NFR-01 (phản hồi < 2s), NFR-05 (index + cache Redis L2/Caffeine L1), NFR-07 (backup) | k6 hoặc `ab`, đồng hồ + ảnh | trong Sprint 4, trước 14/11/2026 |
 
 ## 2. Bộ ca kiểm thử chính (Must-have, phải pass hết mới được demo)
 | TC | UC / AC | Kịch bản | Kỳ vọng | Cách chạy |
@@ -37,13 +37,13 @@ Mọi ca kiểm thử (TC) gắn với use case trong `docs/SRS.md` và tiêu ch
 | TC-21 | AC-08 / BR-01 | **Cách ly dữ liệu**: user A (family 1) đọc giao dịch id của family 2 | 404, không phải 200 và không phải 403-leak | `curl` đổi id |
 | TC-22 | BR-01 | `GET /transactions?familyId=<của hộ khác>` | tham số familyId bị bỏ qua, luôn dùng family của token | `curl` |
 | TC-23 | NFR-03 | Không có token ở mọi endpoint `/api/v1/**` | 401, không có redirect login HTML | `api-smoke.sh` bước 5 |
-| TC-24 | NFR-05 | Gọi 2 lần `/reports/monthly?month=...` | lần 2 trả từ cache (log `CacheInterceptor`), kết quả giống hệt | `logging.level.org.springframework.cache=DEBUG` |
+| TC-24 | NFR-05, NFR-13 (DUAN-57) | Gọi 2 lần `/reports/monthly?month=...` | lần 2 trả từ cache Redis L2 (log `RedisCacheManager`/`CacheInterceptor`), kết quả giống hệt; tắt container `ffa-redis` rồi gọi lại → API vẫn 200, log warn `cache GET lỗi ... gọi thẳng xuống nguồn` (`LoggingCacheErrorHandler`) | `logging.level.org.springframework.cache=DEBUG` + `docker stop ffa-redis` |
 | TC-25 | NFR-07 | Backup rồi restore trên DB khác | `select count(*) from transactions` bằng nhau | `scripts/backup-prod.sh` + mục 6 `docs/DEPLOY.md` |
 | TC-26 | — | `docker compose up` lại sau khi `down` (không purge) | dữ liệu seed và giao dịch test vẫn còn | `scripts/dev-down.sh` rồi `dev-up.sh` |
 | TC-27 | UX | Tháng không có dữ liệu | Dashboard hiện empty state, không NaN/infinity | UI 375px + desktop |
 | TC-28 | NFR-01 | 20 bản ghi/trang, bảng giao dịch | phản hồi < 2s ở LAN | đồng hồ + ảnh |
 
-## 3. Checklist review bảo mật (làm trước 31/10, có người thứ 2 ký)
+## 3. Checklist review bảo mật (làm trong Sprint 4, trước 14/11/2026, có người thứ 2 ký)
 Chạy: `grep` trong repo + thử thủ công. Ghi "Đạt/Không" + người review vào cột cuối.
 
 | # | Nội dung | Lệnh kiểm tra | Kết quả |
@@ -64,7 +64,7 @@ Chạy: `grep` trong repo + thử thủ công. Ghi "Đạt/Không" + người re
 | S14 | Port DB/Adminer không expose ở prod | `docker compose -f docker-compose.prod.yml ps` | |
 | S15 | UFW chỉ 22/80/443 | `sudo ufw status` | |
 
-## 4. Minh chứng cần nộp (thẻ QA-02)
+## 4. Minh chứng cần nộp (issue DUAN-65)
 1. Ảnh CI 3 job xanh + ảnh `api-smoke.sh` in "tất cả bước PASS".
 2. Ảnh `docker compose ps` 4 service healthy.
 3. Ảnh Dashboard có biểu đồ + ảnh cảnh báo ngân sách OVER.
