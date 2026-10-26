@@ -9,8 +9,7 @@ public final class ReportDto {
     private ReportDto() {
     }
 
-    public record MonthTotalsView(int year,
-                                  int month,
+    public record MonthTotalsView(String month,
                                   BigDecimal income,
                                   BigDecimal expense,
                                   BigDecimal net) {

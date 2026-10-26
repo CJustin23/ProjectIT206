@@ -47,6 +47,6 @@ public final class AuthDto {
     public record MemberView(Long userId, String email, String fullName, String role, Object joinedAt) {
     }
 
-    public record MeResponse(UserView user, FamilyView activeFamily, List<FamilyView> families) {
+    public record MeResponse(UserView user, FamilyView family, List<FamilyView> families) {
     }
 }

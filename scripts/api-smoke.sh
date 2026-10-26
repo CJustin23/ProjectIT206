@@ -29,15 +29,16 @@ step "2. Đăng nhập bằng tài khoản demo"
 LOGIN=$(curl -fsS -X POST "$BASE/api/v1/auth/login" \
   -H 'Content-Type: application/json' \
   -d "{\"email\":\"$EMAIL\",\"password\":\"$PASS\"}")
+echo "login body: ${LOGIN:0:400}"
 ACCESS=$(echo "$LOGIN" | jq -r '.accessToken // .access_token // empty')
-REFRESH=$(echo "$LOGIN" | jq -r '.refreshToken // .refresh_token // empty')
+ REFRESH=$(echo "$LOGIN" | jq -r '.refreshToken // .refresh_token // empty')
 [ -n "$ACCESS" ]; check $? "nhận được accessToken"
 
 AUTH="Authorization: Bearer $ACCESS"
 
 step "3. Danh tính hiện tại"
-ME=$(curl -fsS "$BASE/api/v1/auth/me" -H "$AUTH")
-echo "$ME" | jq -e '.email != null' >/dev/null; check $? "GET /auth/me trả email"
+ME=$(curl -fsS "$BASE/api/v1/auth/me" -H "$AUTH" || true)
+echo "$ME" | jq -e '.user.email != null' >/dev/null; check $? "GET /auth/me trả user.email"
 
 step "4. Sai mật khẩu phải bị chặn"
 CODE=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$BASE/api/v1/auth/login" \
@@ -66,7 +67,7 @@ CODE=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$BASE/api/v1/transactions
 
 step "8. Báo cáo tháng"
 REPORT=$(curl -fsS "$BASE/api/v1/reports/dashboard?month=$(date +%Y-%m)" -H "$AUTH")
-echo "$REPORT" | XX' >/dev/null; check $? "report tháng có tổng chi"
+echo "$REPORT" | jq -e 'has("expense")' >/dev/null; check $? "dashboard có tổng chi trong tháng"
 
 step "9. Xoá mềm giao dịch"
 curl -fsS -X DELETE "$BASE/api/v1/transactions/$TX_ID" -H "$AUTH" >/dev/null; check $? "DELETE /transactions/{id}"

@@ -115,17 +115,16 @@ public class ReportService {
     }
 
     private List<ReportDto.MonthTotalsView> trend(AuthPrincipal principal, YearMonth current) {
-        Map<Integer, ReportDto.MonthTotalsView> byPeriod = new HashMap<>();
+        Map<String, ReportDto.MonthTotalsView> byPeriod = new HashMap<>();
         for (int year : new int[] {current.getYear(), current.getYear() - 1}) {
-            monthsOfYear(principal.familyId(), year)
-                .forEach(row -> byPeriod.put(row.year() * 100 + row.month(), row));
+            monthsOfYear(principal.familyId(), year).forEach(row -> byPeriod.put(row.month(), row));
         }
         List<ReportDto.MonthTotalsView> trend = new ArrayList<>(12);
         for (int back = 11; back >= 0; back--) {
             YearMonth month = current.minusMonths(back);
-            trend.add(byPeriod.getOrDefault(month.getYear() * 100 + month.getMonthValue(),
-                new ReportDto.MonthTotalsView(month.getYear(), month.getMonthValue(),
-                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO)));
+            String key = formatMonth(month);
+            trend.add(byPeriod.getOrDefault(key,
+                new ReportDto.MonthTotalsView(key, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO)));
         }
         return trend;
     }
@@ -135,10 +134,15 @@ public class ReportService {
             .map(row -> {
                 BigDecimal income = nz(row.getIncome());
                 BigDecimal expense = nz(row.getExpense());
-                return new ReportDto.MonthTotalsView(row.getYear(), row.getMonth(), income, expense,
+                return new ReportDto.MonthTotalsView(
+                    formatMonth(YearMonth.of(row.getYear(), row.getMonth())), income, expense,
                     income.subtract(expense));
             })
             .toList();
+    }
+
+    private String formatMonth(YearMonth month) {
+        return String.format("%04d-%02d", month.getYear(), month.getMonthValue());
     }
 
     private YearMonth parseMonth(String month) {
