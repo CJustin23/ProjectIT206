@@ -15,15 +15,11 @@
 ## 1. Repository (ĐÃ PUSH — 22/10/2026)
 Repo thật của nhóm: **https://github.com/CJustin23/ProjectIT206** — đã có `main` + `develop` và commit `chore(sprint1): ...`.
 
-Còn 2 việc phải làm tay trên repo này:
-```bash
-# 1.1 Sinh Gradle wrapper để người khác không cần cài Gradle (rồi commit)
-cd backend && gradle wrapper --gradle-version 8.14 && cd ..
-git add gradlew gradlew.bat gradle/ backend/gradle/wrapper
-git commit -m "chore(build): them gradle wrapper"
-git push
+Đã xong: **Gradle wrapper** (`backend/gradlew`, Gradle 8.14 — CI và máy thành viên đều dùng `./gradlew`, không phải cài Gradle).
 
-# 1.2 Branch protection cho main + develop (can gh da login)
+Còn 1 việc phải làm tay trên repo này:
+```bash
+# 1.1 Branch protection cho main + develop (can gh da login)
 gh auth login            # chon GitHub.com -> HTTPS -> Login with a web browser
 gh api repos/CJustin23/ProjectIT206/branches/main/protection -X PUT \
   -f required_status_checks[strict]=true \
@@ -57,7 +53,7 @@ bash scripts/smoke-test.sh
 | # | Kiểm tra | Kỳ vọng |
 |---|---|---|
 | 1 | `docker compose ps` | 4 service `running`, `ffa-app` = `healthy` |
-| 2 | `curl http://localhost:8090/api/health` | `"status":"UP"`, `"connected":true`, `"tables":14`, `"flywayVersion":"2"` |
+| 2 | `curl http://localhost:8090/api/health` | `"status":"UP"`, `"connected":true`, `"tables":14`, `"flywayVersion":"3"` |
 | 3 | Mở `http://localhost:5173` | trang hiển thị "Backend: UP" + "MySQL: kết nối OK — 14 bảng" |
 | 4 | Adminer `http://localhost:8081` (server `mysql`, user/password trong `.env`) | thấy 13 bảng + 11 dòng `transactions` |
 | 5 | Action `ci` trên GitHub | ✅ **ĐÃ ĐẠT** — run #4 (26/10/2026) 3 job xanh: backend build + test, frontend typecheck + build, compose smoke (`docker compose up -d --wait` rồi `/api/health` trả `"connected":true`) |

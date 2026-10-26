@@ -1,7 +1,7 @@
 # =============================================================================
 # Sprint 1: CI chạy build + test + lint (chưa deploy).
 # Sprint 3 (thẻ OPS-02) sẽ thêm job build image -> push GHCR -> SSH deploy VPS.
-# Chạy trên: PR vào develop/main và push vào develop.
+# Chạy trên: PR vào develop/main và push vào main hoặc develop.
 # =============================================================================
 name: ci
 
@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [main, develop]
   push:
-    branches: [develop]
+    branches: [main, develop]
 
 concurrency:
   group: ci-${{ github.ref }}
