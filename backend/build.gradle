@@ -1,8 +1,11 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.5'
-    id 'io.spring.dependency-management' version '1.1.7'
 }
+
+// BOM khai bao truc tiep qua platform(): plugin io.spring.dependency-management
+// khong resolve duoc tren may dev (Gradle loc loi marker), van giu CI chay on dinh.
+def bootBom = 'org.springframework.boot:spring-boot-dependencies:3.5.5'
 
 group = 'vn.ptit'
 version = '0.1.0'
@@ -23,6 +26,10 @@ ext {
 }
 
 dependencies {
+    implementation platform(bootBom)
+    runtimeOnly platform(bootBom)
+    testRuntimeOnly platform(bootBom)
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -39,6 +46,11 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
 
     runtimeOnly 'com.mysql:mysql-connector-j'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
