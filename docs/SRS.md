@@ -12,7 +12,7 @@
 | Ngày cập nhật | 22/10/2026 |
 | Trạng thái | Draft — chờ Giảng viên duyệt |
 
-**Người chịu trách nhiệm tài liệu:** Nguyễn Tiến Cường (An) — Leader/Backend Lead.
+**Người chịu trách nhiệm tài liệu:** Nguyễn Trường An (An) — Leader/Backend Lead.
 **Tham chiếu:** [`ERD.md`](ERD.md) · [`api.md`](api.md) · [`sprint1-checklist.md`](sprint1-checklist.md) · `Ke_Hoach_Do_An_Nhom05_DeTai10.xlsx` (sheet Backlog, RACI).
 
 ---

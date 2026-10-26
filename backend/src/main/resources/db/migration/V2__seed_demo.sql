@@ -1,13 +1,13 @@
 -- =============================================================================
 --  V2__seed_demo.sql — Dữ liệu mẫu PHỤC VỤ DEMO/REPORT, không dùng cho production
---  Tài khoản demo: cuong@ffa.dev / mật khẩu: password  (hash bcrypt, dev-only)
+--  Tài khoản demo: an@ffa.dev / mật khẩu: password  (hash bcrypt, dev-only)
 --  Sinh viên: Thành (Database & Data Lead)
 -- =============================================================================
 
 INSERT INTO users (id, email, password_hash, full_name, phone, is_admin) VALUES
-  (1, 'cuong@ffa.dev', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'Nguyễn Tiến Cường', '0900000001', 1),
-  (2, 'thanh@ffa.dev', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'Lê Văn Thành', NULL, 0),
-  (3, 'ky@ffa.dev',    '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'Trần Thị Kỳ',    NULL, 0);
+  (1, 'an@ffa.dev', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'Nguyễn Trường An', '0900000001', 1),
+  (2, 'thanh@ffa.dev', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'Nguyễn Tiến Thành', NULL, 0),
+  (3, 'tu@ffa.dev',    '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'Bàng Trọng Tú',    NULL, 0);
 
 INSERT INTO families (id, name, base_currency, fiscal_month_start_day, created_by) VALUES
   (1, 'Gia đình An', 'VND', 1, 1);

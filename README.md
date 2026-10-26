@@ -7,10 +7,10 @@ Nhóm 05 · Giảng viên hướng dẫn: ThS. Bùi Thanh Hải · Hạn nộp p
 
 | STT | Họ và tên | MSV | Vai trò | Phạm vi chính |
 |-----|-----------|-----|---------|----------------|
-| 1 | Nguyễn Tiến Cường (An) — Leader | B24DCCN181 | Backend Lead | Kiến trúc, REST API, Auth/JWT, màn hình hộ gia đình, điều phối |
-| 2 | (Thành) | B24DCCN283 | Database & Data Lead | ERD, migration, index, dữ liệu mẫu |
-| 3 | (Tú) | B24DCCN444 | Backend Engineer & Dashboard UI | Transaction, Budget, Report API, biểu đồ Recharts |
-| 4 | (Vinh) | B24DCCN227 | DevOps, QA & Frontend Lead | Docker, CI/CD, VPS, kiểm thử, Figma + khung UI React |
+| 1 | Nguyễn Trường An (An) — Leader | B24DCCN181 | Backend Lead | Kiến trúc, REST API, Auth/JWT, màn hình hộ gia đình, điều phối |
+| 2 | Nguyễn Tiến Thành (Thành) | B24DCCN283 | Database & Data Lead | ERD, migration, index, dữ liệu mẫu |
+| 3 | Bàng Trọng Tú (Tú) | B24DCCN444 | Backend Engineer & Dashboard UI | Transaction, Budget, Report API, biểu đồ Recharts |
+| 4 | Lê Hoàng Xuân Vinh (Vinh) | B24DCCN227 | DevOps, QA & Frontend Lead | Docker, CI/CD, VPS, kiểm thử, Figma + khung UI React |
 
 ## 2. Công nghệ
 

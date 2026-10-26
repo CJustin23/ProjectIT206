@@ -80,7 +80,7 @@
 {
   "id": 12, "familyId": 1, "walletId": 2, "categoryId": 1, "type": "EXPENSE",
   "amount": 185000, "transactionDate": "2026-10-04", "note": "Cơm trưa văn phòng",
-  "createdBy": { "id": 1, "fullName": "Nguyễn Tiến Cường" },
+  "createdBy": { "id": 1, "fullName": "Nguyễn Trường An" },
   "walletBalanceAfter": 24635000,
   "createdAt": "2026-10-22T20:31:02+07:00", "version": 0
 }

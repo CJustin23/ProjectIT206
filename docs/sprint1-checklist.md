@@ -63,7 +63,7 @@ bash scripts/smoke-test.sh
 | 5 | Action `ci` trên GitHub | ✅ **ĐÃ ĐẠT** — run #4 (26/10/2026) 3 job xanh: backend build + test, frontend typecheck + build, compose smoke (`docker compose up -d --wait` rồi `/api/health` trả `"connected":true`) |
 | 6 | `docker compose down && docker compose up -d` | dữ liệu seed **vẫn còn** (volume hoạt động) |
 
-Dòng 1–4 và 6 là kiểm tra trên máy từng thành viên (Cường chạy một lần rồi báo kết quả); dòng 5 đã được chứng minh bằng CI nên môi trường được coi là chạy được trên máy sạch.
+Dòng 1–4 và 6 là kiểm tra trên máy từng thành viên (An chạy một lần rồi báo kết quả); dòng 5 đã được chứng minh bằng CI nên môi trường được coi là chạy được trên máy sạch.
 
 Lệnh dọn dẹp: `bash scripts/dev-down.sh` (giữ dữ liệu) · `bash scripts/dev-down.sh --purge` (xóa sạch, chạy lại migration từ đầu).
 
@@ -78,7 +78,7 @@ Thiết kế xong: **File → Share → Link (Anyone with the link can view)** �
 ## 5. Việc còn tồn của Sprint 1
 | Mã | Việc | Ai | Hạn |
 |---|---|---|---|
-| S1-01 | Kiểm tra lại **họ tên thật** 4 thành viên ở trang bìa Word (MSV đã điền: An 181, Thành 283, Tú 444, Vinh 227 — tên đang là `Trần Văn Thành / Lê Văn Tú / Phạm Quốc Vinh`) | An | 27/10 |
+| S1-01 | Đối chiếu lại bìa Word với hồ sơ lớp: Nguyễn Trường An (181), Nguyễn Tiến Thành (283), Bàng Trọng Tú (444), Lê Hoàng Xuân Vinh (227) | An | 27/10 |
 | S1-02 | Dán link repo + board + Figma vào mục 1 file Word | An | 27/10 |
 | S1-03 | Nộp file Word + Excel + 3 link trên biểu mẫu của giảng viên | An | 27/10 |
 | S1-04 | Chụp 2 ảnh: `docker compose ps` healthy + dashboard Figma | Vinh, Tú | 27/10 |
