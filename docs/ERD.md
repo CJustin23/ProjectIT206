@@ -87,6 +87,7 @@ erDiagram
         tinyint is_recurring
         json recurring_rule
         datetime deleted_at
+        bigint version
     }
     TRANSACTION_ATTACHMENTS {
         bigint id PK
@@ -103,6 +104,7 @@ erDiagram
         date period_end
         decimal limit_amount
         tinyint alert_threshold_percent
+        bigint version
     }
     SAVINGS_GOALS {
         bigint id PK
@@ -154,9 +156,9 @@ erDiagram
 | `family_members` | Quan hệ nhiều-nhiều + vai trò | UK `(family_id, user_id)` | role: `OWNER/ADMIN/MEMBER/VIEWER` |
 | `categories` | Danh mục thu/chi theo hộ | UK `(family_id, kind, name)` | cây 2 cấp qua `parent_id`; `is_system=1` là danh mục template |
 | `wallets` | Nguồn tiền | UK `(family_id, name)` | `opening_balance` là điểm tựa để tính số dư |
-| `transactions` | Giao dịch | PK `id` | `CHECK (amount>0)`; soft delete; `TRANSFER` có `transfer_wallet_id` |
+| `transactions` | Giao dịch | PK `id` | `CHECK (amount>0)`; soft delete; `TRANSFER` có `transfer_wallet_id`; `version` (V3) cho optimistic lock |
 | `transaction_attachments` | Ảnh hóa đơn | PK `id` | file lưu disk/S3, DB chỉ giữ `file_key` |
-| `budgets` | Hạn mức chi | UK `(family_id, category_id, period_start)` | chỉ dùng cho `kind=EXPENSE` |
+| `budgets` | Hạn mức chi | UK `(family_id, category_id, period_start)` | chỉ dùng cho `kind=EXPENSE`; `version` (V3) chống ghi đè đồng thời |
 | `savings_goals` | Mục tiêu tiết kiệm | PK `id` | `saved_amount` cập nhật khi có `goal_contributions` |
 | `goal_contributions` | Lịch sử đóng góp | PK `id` | giữ `wallet_id` để hoàn tác được |
 | `refresh_tokens` | Phiên đăng nhập | UK `token_hash` | hash SHA-256, rotation mỗi lần refresh |
