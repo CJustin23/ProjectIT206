@@ -23,8 +23,21 @@ spring:
     enabled: true
     baseline-on-migrate: true
     locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+      timeout: 3s
   cache:
-    type: caffeine
+    # DUAN-57: bao cao thang cache bang Redis (L2, chia se giua các instance).
+    # Caffeine van con cho tang L1 (xem CacheConfig, bean caffeineCacheManager).
+    # Redis khong truy cap duoc thi CacheConfig nu loi, goi thang xuong MySQL.
+    type: redis
+    redis:
+      time-to-live: 10m
+      cache-null-values: false
+      key-prefix: "budglee:"
+      use-key-prefix: true
   servlet:
     multipart:
       max-file-size: 5MB

@@ -2,6 +2,7 @@
 # Môi trường DEVELOPMENT — Sprint 1
 # Khởi động:  docker compose --env-file .env up -d --build
 # Kiểm tra:   docker compose ps && curl http://localhost:8090/api/health
+# Service:    mysql · redis · app (Spring Boot) · web (Vite) · adminer
 # =============================================================================
 name: ${COMPOSE_PROJECT_NAME:-ffa-dev}
 
@@ -32,6 +33,25 @@ services:
     networks:
       - ffa-net
 
+  redis:
+    image: redis:7-alpine
+    container_name: ffa-redis
+    restart: unless-stopped
+    command:
+      - --appendonly
+      - "no"
+      - --maxmemory
+      - 128mb
+      - --maxmemory-policy
+      - allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - ffa-net
+
   app:
     build:
       context: ./backend
@@ -43,6 +63,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
       DB_HOST: ${DB_HOST:-mysql}
@@ -50,6 +72,8 @@ services:
       DB_NAME: ${MYSQL_DATABASE}
       DB_USER: ${MYSQL_USER}
       DB_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
       JWT_SECRET: ${JWT_SECRET}
       JWT_ACCESS_TOKEN_MIN: ${JWT_ACCESS_TOKEN_MIN:-15}
       JWT_REFRESH_TOKEN_DAY: ${JWT_REFRESH_TOKEN_DAY:-30}

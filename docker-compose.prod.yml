@@ -31,12 +31,28 @@ services:
       start_period: 30s
     networks: [ffa-net]
 
+  redis:
+    image: redis:7-alpine
+    container_name: ffa-redis
+    restart: unless-stopped
+    command: ["--appendonly", "no", "--maxmemory", "192mb", "--maxmemory-policy", "allkeys-lru"]
+    volumes:
+      - redis_cache:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks: [ffa-net]
+
   app:
     image: ${APP_IMAGE}
     container_name: ffa-app
     restart: unless-stopped
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: prod
@@ -45,6 +61,8 @@ services:
       DB_NAME: ${MYSQL_DATABASE}
       DB_USER: ${MYSQL_USER}
       DB_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
       JWT_SECRET: ${JWT_SECRET}
       JWT_ACCESS_TOKEN_MIN: ${JWT_ACCESS_TOKEN_MIN:-15}
       JWT_REFRESH_TOKEN_DAY: ${JWT_REFRESH_TOKEN_DAY:-30}
@@ -81,6 +99,7 @@ services:
 
 volumes:
   db_data:
+  redis_cache:
   certbot_www:
   certs:
 

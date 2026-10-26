@@ -1,0 +1,39 @@
+Key,Sprint,Tieu de,Nguoi phu trach,Trang thai,Han
+DUAN-30,Sprint 1,Thiết kế giao diện UI/UX toàn bộ hệ thống trên Figma (Dashboard, Wallet, Budget),Thành,Done,26/10/2026
+DUAN-31,Sprint 1,Xây dựng Wireframe các màn hình báo cáo, thống kê biểu đồ,Thành,Done,26/10/2026
+DUAN-32,Sprint 1,Khảo sát nghiệp vụ thu chi cá nhân & thiết kế sơ đồ thực thể quan hệ ERD,Tú,Done,26/10/2026
+DUAN-33,Sprint 1,Chuẩn hóa các bảng CSDL (User, Wallet, Category, Transaction, Budget, Goal),Tú,Done,26/10/2026
+DUAN-34,Sprint 1,Khởi tạo Git Repository, phân nhánh main/develop & thiết lập Git Flow,Vinh,Done,26/10/2026
+DUAN-35,Sprint 1,Cấu hình Docker Compose cho môi trường local (MySQL, Redis, Backend, Frontend),Vinh,Done,26/10/2026
+DUAN-36,Sprint 1,Khởi tạo Jira Project Board, phân chia Epic, Sprint và gán task ban đầu cho nhóm,Vinh,Done,26/10/2026
+DUAN-37,Sprint 1,Tổ chức họp nhóm định kỳ qua Google Meet, thống nhất cấu trúc thư mục code,Team,Done,26/10/2026
+DUAN-38,Sprint 2,Xây dựng Entity, Repository và cấu hình Spring Data JPA cho Backend,An,In Progress,02/11/2026
+DUAN-39,Sprint 2,Phát triển API Đăng ký, Đăng nhập (Mã hóa BCrypt & cấp phát JWT Token),An,To Do,02/11/2026
+DUAN-40,Sprint 2,Xây dựng bộ lọc Spring Security (JwtAuthenticationFilter) & phân quyền RBAC,An,To Do,02/11/2026
+DUAN-41,Sprint 2,Khởi tạo dự án ReactJS (Vite + TypeScript + Tailwind CSS),Thành,In Progress,02/11/2026
+DUAN-42,Sprint 2,Xây dựng Layout chung Frontend (Sidebar, Header, Navbar, Footer),Thành,To Do,02/11/2026
+DUAN-43,Sprint 2,Tích hợp Axios Client, cấu hình Interceptor xử lý gắn Token tự động,Thành,To Do,02/11/2026
+DUAN-44,Sprint 2,Viết kịch bản Database Migration (Flyway/Liquibase) khởi tạo schema tự động,Tú,In Progress,02/11/2026
+DUAN-45,Sprint 2,Viết file seed data mẫu cho bảng Categories (Ăn uống, Mua sắm, Du lịch, Sức khỏe...),Tú,To Do,02/11/2026
+DUAN-46,Sprint 2,Viết kịch bản seed dữ liệu mẫu cho Wallets và Users kiểm thử,Tú,To Do,02/11/2026
+DUAN-47,Sprint 2,Cấu hình biến môi trường (.env) cho các service Backend và Frontend,Vinh,To Do,02/11/2026
+DUAN-48,Sprint 3,Phát triển RESTful API CRUD Quản lý Ví/Thẻ (Wallets & Cards),An,To Do,09/11/2026
+DUAN-49,Sprint 3,Phát triển RESTful API CRUD Danh mục thu chi (Categories),An,To Do,09/11/2026
+DUAN-50,Sprint 3,Phát triển API Ghi nhận Giao dịch Thu/Chi/Chuyển khoản (Đảm bảo tính toàn vẹn ACID),An,To Do,09/11/2026
+DUAN-51,Sprint 3,Phát triển màn hình quản lý Ví tài khoản & Danh sách thẻ trên React,Thành,To Do,09/11/2026
+DUAN-52,Sprint 3,Phát triển màn hình Giao dịch (Thêm, Sửa, Xóa, Tìm kiếm & Bộ lọc nâng cao),Thành,To Do,09/11/2026
+DUAN-53,Sprint 3,Xây dựng API & Giao diện thiết lập Ngân sách định kỳ (New Budget),Thành,To Do,09/11/2026
+DUAN-54,Sprint 3,Tích hợp thư viện biểu đồ Recharts/ChartJS vẽ biểu đồ đường (Total Spent),Thành,To Do,09/11/2026
+DUAN-55,Sprint 3,Xây dựng logic hiển thị cảnh báo vượt ngân sách (Thanh tiến trình đổi màu 80%-100%),Thành,To Do,09/11/2026
+DUAN-56,Sprint 3,Đánh chỉ mục (Index) các cột tra cứu nhiều trên bảng Transactions và Wallets,Tú,To Do,09/11/2026
+DUAN-57,Sprint 3,Cấu hình Redis Caching lưu trữ tạm dữ liệu thống kê Dashboard tháng,Tú,To Do,09/11/2026
+DUAN-58,Sprint 4,Phát triển API Mục tiêu tiết kiệm (Saving Goals) & Theo dõi tiến độ tích lũy,An,To Do,14/11/2026
+DUAN-59,Sprint 4,Phát triển màn hình Mục tiêu tiết kiệm (Goals) và tab Insight phân tích dòng tiền,Thành,To Do,14/11/2026
+DUAN-60,Sprint 4,Tích hợp tính năng Bot gợi ý tối ưu thói quen chi tiêu (Financial Insights),Thành,To Do,14/11/2026
+DUAN-61,Sprint 4,Xây dựng chức năng xuất báo cáo tài chính (Export CSV/Excel/PDF),Thành,To Do,14/11/2026
+DUAN-62,Sprint 4,Kiểm tra, tối ưu hóa câu lệnh SQL truy vấn báo cáo và dọn dẹp database,Tú,To Do,14/11/2026
+DUAN-63,Sprint 4,Thiết lập quy trình CI/CD tự động bằng GitHub Actions (Build & Test tự động),Vinh,To Do,14/11/2026
+DUAN-64,Sprint 4,Cấu hình kịch bản Cronjob tự động sao lưu Database (Auto Backup) hàng ngày,Vinh,To Do,14/11/2026
+DUAN-65,Sprint 4,Viết bộ Test Cases và thực hiện kiểm thử tích hợp API (Postman / JUnit),Vinh,To Do,14/11/2026
+DUAN-66,Sprint 4,Cấu hình Nginx Reverse Proxy, trỏ domain và cài đặt chứng chỉ bảo mật HTTPS SSL,Vinh,To Do,14/11/2026
+DUAN-67,Sprint 4,Đóng gói Docker Container toàn hệ thống, deploy lên Production VPS & nghiệm thu dự án,Team,To Do,14/11/2026
